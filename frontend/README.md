@@ -1,36 +1,197 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Frontend — ЛЕГАЛЬНО.МАРКЕТ
 
-## Getting Started
+Клиентская часть маркетплейса «ЛЕГАЛЬНО.МАРКЕТ» на базе **Next.js 16 (App Router)**, **React 19**, **TypeScript** и **Tailwind CSS**.
 
-First, run the development server:
+---
+
+## 🚀 Быстрый старт
+
+### 1. Установка зависимостей
+
+```bash
+npm install
+```
+
+### 2. Запуск в режиме разработки
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Приложение откроется по адресу: `http://localhost:3000`
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### 3. Сборка и запуск продакшен-версии
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```bash
+npm run build
+npm run start
+```
 
-## Learn More
+### 4. Проверка качества кода
 
-To learn more about Next.js, take a look at the following resources:
+```bash
+npm run lint
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+---
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## 📁 Структура проекта
 
-## Deploy on Vercel
+```
+frontend/
+├── app/
+│   ├── globals.css                       # Все стили, шрифты, цветовые переменные и анимации
+│   ├── layout.tsx                        # Корневой layout с метаданными
+│   └── page.tsx                          # Главная страница: провайдер контекста и рендеринг табов
+├── types/
+│   └── index.ts                          # TypeScript интерфейсы (Product, Order, User, Review и др.)
+├── data/
+│   ├── products.ts                       # Начальный каталог товаров (15 товаров)
+│   ├── countries.ts                      # Тарифы и условия доставки в страны
+│   └── constants.ts                      # Категории, иконки, меню профиля, курсы валют
+├── context/
+│   └── MarketplaceContext.tsx            # Реактивное управление состоянием (корзина, профиль, тосты)
+└── components/
+    ├── icons/Icon.tsx                    # Компонент масштабируемых SVG-иконок
+    ├── Header.tsx                        # Шапка с поиском, выбором страны и счетчиками
+    ├── CatalogDrawer.tsx                 # Выпадающее двухуровневое меню каталога на десктопе
+    ├── GeoDropdown.tsx                   # Выпадающий список стран доставки
+    ├── BottomNav.tsx                     # Фиксированная мобильная навигация
+    ├── Footer.tsx                        # Подвал с разделами и копирайтом
+    ├── Toast.tsx                         # Всплывающие системные уведомления
+    ├── AuthModal.tsx                     # Модалка входа и регистрации
+    ├── MobileSubpage.tsx                 # Мобильная шторка (Доставка / FAQ)
+    ├── ProductCard.tsx                   # Карточка товара
+    └── tabs/
+        ├── HomeTab.tsx                   # Главная: слайдер, баннеры, скидки недели
+        ├── CatalogTab.tsx                # Каталог: боковое меню, фильтрация, сортировка
+        ├── FavsTab.tsx                   # Избранное: список и кнопка «Всё в корзину»
+        ├── ProductDetailTab.tsx          # Детальная карточка товара, калькулятор доставки
+        ├── CartTab.tsx                   # Корзина, чекаут и Сертификат легальности
+        ├── ProfileTab.tsx                # Профиль: карта покупателя, баллы, заказы, настройки
+        ├── DeliveryTab.tsx               # Условия доставки по 63 странам
+        └── FaqTab.tsx                    # Вопросы и ответы (аккордеоны)
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+---
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## 📋 Задачи для Frontend Developer (Roadmap)
+
+Статус задач:  
+`[x]` — реализовано  
+`[ ]` — запланировано к реализации
+
+---
+
+### Блок FE-1: Базовый перенос и декомпозиция (ВЫПОЛНЕНО)
+
+- [x] **FE-1.1 Перенос верстки и стилей**:
+  - Полный перенос CSS из монолитного `index.html` в `app/globals.css`.
+  - Подключение шрифтов (Piazzolla, IBM Plex Sans, JetBrains Mono).
+  - Обеспечение 100% визуального соответствия и адаптивности.
+- [x] **FE-1.2 Декомпозиция на компоненты**:
+  - Разбивка на модульные компоненты: Header, Drawer, BottomNav, Footer, Toast, AuthModal, ProductCard.
+  - Вынос страниц в отдельные вкладки (`components/tabs/*`).
+- [x] **FE-1.3 Типизация**:
+  - Создание единой схемы типов в `types/index.ts`.
+  - Устранение использования `any`.
+- [x] **FE-1.4 Клиентский стейт-менеджмент**:
+  - Реализация `MarketplaceContext` с поддержкой корзины, избранного, валют, профиля, фильтрации и тостов.
+  - Сохранение состояния в `localStorage`.
+
+---
+
+### Блок FE-2: Интеграция с Django Backend API
+
+- [ ] **FE-2.1 Сервисный слой API (`services/api.ts`)**:
+  - Создать HTTP-клиент (на базе `fetch` или `axios`) с базовым URL из `process.env.NEXT_PUBLIC_API_URL` (по умолчанию `http://localhost:8000/api/v1`).
+  - Добавить перехватчик (interceptor) для добавления заголовка `Authorization: Bearer <access_token>`.
+  - Автоматическое обновление токена через `/api/v1/auth/refresh/` при получении 401 ошибки.
+- [ ] **FE-2.2 Интеграция каталога и товаров**:
+  - Заменить чтение `data/products.ts` на вызов `GET /api/v1/products/`.
+  - Заменить чтение категорий на вызов `GET /api/v1/categories/`.
+  - Добавить поддержку серверной пагинации и динамической подгрузки.
+  - Подключить получение детальной информации о товаре по ID (`GET /api/v1/products/{id}/`) и похожих товаров (`GET /api/v1/products/{id}/similar/`).
+- [ ] **FE-2.3 Интеграция тарифов доставки**:
+  - Заменить `data/countries.ts` на вызов `GET /api/v1/countries/`.
+  - Динамически рассчитывать стоимость и сроки доставки на основе данных с бэкенда.
+
+---
+
+### Блок FE-3: Авторизация и профиль пользователя
+
+- [ ] **FE-3.1 Сессия и токены**:
+  - Подключить отправку формы входа на `POST /api/v1/auth/login/`.
+  - Подключить регистрацию на `POST /api/v1/auth/register/`.
+  - Хранить токены в безопасных cookies (`js-cookie` или серверные cookies Next.js).
+- [ ] **FE-3.2 Синхронизация профиля**:
+  - Получение профиля при старте приложения: `GET /api/v1/auth/profile/`.
+  - Обновление данных (имя, страна по умолчанию): `PATCH /api/v1/auth/profile/`.
+  - Отображение реального номера карты (`LM-24-XXXXXX`) и баланса очков легальности.
+
+---
+
+### Блок FE-4: Корзина, чекаут и сертификаты
+
+- [ ] **FE-4.1 Синхронизация корзины**:
+  - Отправка действий в корзине на бэкенд (`GET /api/v1/cart/`, `POST /api/v1/cart/items/`).
+  - Объединение локальной корзины гостя с аккаунтом после входа.
+- [ ] **FE-4.2 Оформление заказа**:
+  - Отправка заполненной формы чекаута на `POST /api/v1/orders/`.
+  - Обработка серверных ошибок (недостаточно остатка, невалидный адрес).
+  - Получение данных созданного заказа и отображение сгенерированного «Сертификата легальности».
+  - Добавление кнопки «Скачать PDF сертификата» по ссылке с бэкенда.
+- [ ] **FE-4.3 История заказов**:
+  - Загрузка реального списка покупок пользователя (`GET /api/v1/orders/`).
+
+---
+
+### Блок FE-5: Отзывы, уведомления и сервисы
+
+- [ ] **FE-5.1 Отзывы**:
+  - Загрузка отзывов к товару: `GET /api/v1/products/{id}/reviews/`.
+  - Отправка отзыва к купленному товару через форму в профиле: `POST /api/v1/reviews/`.
+- [ ] **FE-5.2 Уведомления**:
+  - Получение списка уведомлений с бэкенда: `GET /api/v1/notifications/`.
+  - Пометка уведомлений прочитанными: `PATCH /api/v1/notifications/{id}/read/`.
+  - Очистка уведомлений: `DELETE /api/v1/notifications/clear/`.
+- [ ] **FE-5.3 Заявка «Стать продавцом»**:
+  - Отправка заявки на `POST /api/v1/seller-applications/` с блокировкой кнопки при отправке.
+
+---
+
+### Блок FE-6: Оптимизация, UX и SEO
+
+- [ ] **FE-6.1 Оптимизация изображений**:
+  - Заменить стандартные теги `<img>` на `<Image />` из `next/image`.
+  - Добавить `picsum.photos` и домен бэкенда в `remotePatterns` в `next.config.ts`.
+- [ ] **FE-6.2 Состояния загрузки (Skeletons)**:
+  - Добавить скелетоны карточек товаров при первой загрузке каталога.
+  - Добавить спиннеры или индикаторы загрузки для кнопок чекаута и авторизации.
+- [ ] **FE-6.3 SEO и OpenGraph**:
+  - Настроить динамические метаданные (`generateMetadata`) для карточек товаров.
+  - Добавить OpenGraph теги и favicon.
+- [ ] **FE-6.4 Обработка ошибок**:
+  - Добавить глобальный `error.tsx` для перехвата сбоев.
+  - Уведомление пользователя при отсутствии интернет-соединения.
+
+---
+
+### Блок FE-7: Тестирование
+
+- [ ] **FE-7.1 Unit & Component Tests**:
+  - Настроить `Jest` / `Vitest` + `React Testing Library`.
+  - Написать тесты для расчета корзины, применения скидок и переключения валют.
+- [ ] **FE-7.2 E2E Тесты**:
+  - Настроить `Playwright`.
+  - Написать сценарии: выбор товара → добавление в корзину → оформление заказа → проверка сертификата.
+
+---
+
+## ⚙️ Переменные окружения (`.env.local`)
+
+Для подключения к бэкенду создайте файл `.env.local` в корне папки `frontend/`:
+
+```env
+NEXT_PUBLIC_API_URL=http://localhost:8000/api/v1
+```
