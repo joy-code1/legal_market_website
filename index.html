@@ -1,0 +1,5151 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, viewport-fit=cover"
+    />
+    <meta name="theme-color" content="#F5F4EE" />
+    <title>ЛЕГАЛЬНО.МАРКЕТ — маркетплейс легальных товаров</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Piazzolla:wght@600;700;800&family=IBM+Plex+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --bg: #f5f4ee;
+        --panel: #ffffff;
+        --ink: #1b1c1e;
+        --dim: #6c6f6a;
+        --line: #e4e2d6;
+        --line2: #d3d1c2;
+        --green: #1f6b45;
+        --green-dark: #175336;
+        --green-soft: #eaf2ec;
+        --red: #c6472e;
+        --amber: #b98a1c;
+        --sand: #eae3ce;
+        --r-s: 6px;
+        --r-m: 8px;
+        --r-l: 12px;
+        --shadow-card: 0 6px 18px rgba(27, 28, 30, 0.08);
+        --shadow-soft: 0 2px 10px rgba(27, 28, 30, 0.05);
+        --scroll: #cbc8b8;
+      }
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      html {
+        scrollbar-width: thin;
+        scrollbar-color: var(--scroll) var(--bg);
+        -webkit-text-size-adjust: 100%;
+      }
+      ::-webkit-scrollbar {
+        width: 10px;
+        height: 8px;
+      }
+      ::-webkit-scrollbar-track {
+        background: var(--bg);
+      }
+      ::-webkit-scrollbar-thumb {
+        background: var(--scroll);
+        border-radius: 8px;
+        border: 2px solid var(--bg);
+      }
+      ::-webkit-scrollbar-thumb:hover {
+        background: var(--green);
+      }
+      body {
+        background: var(--bg);
+        color: var(--ink);
+        font-family: "IBM Plex Sans", sans-serif;
+        font-size: 16px;
+        line-height: 1.55;
+      }
+      ::selection {
+        background: var(--green);
+        color: #fff;
+      }
+      img {
+        display: block;
+        max-width: 100%;
+      }
+      button {
+        font-family: inherit;
+        cursor: pointer;
+        background: none;
+        border: none;
+        color: inherit;
+      }
+      input,
+      select {
+        font-family: inherit;
+        font-size: 16px;
+      }
+      a {
+        color: inherit;
+        text-decoration: none;
+      }
+      .wrap {
+        max-width: 1240px;
+        margin: 0 auto;
+        padding: 0 20px;
+      }
+      .mono {
+        font-family: "JetBrains Mono", monospace;
+      }
+      .display {
+        font-family: "Piazzolla", serif;
+      }
+      :focus-visible {
+        outline: 2px solid var(--green);
+        outline-offset: 2px;
+      }
+      svg {
+        display: inline-block;
+        vertical-align: middle;
+      }
+      header {
+        position: sticky;
+        top: 0;
+        z-index: 200;
+        background: rgba(245, 244, 238, 0.96);
+        backdrop-filter: blur(8px);
+        border-bottom: 1px solid var(--line2);
+      }
+      header.scrolled {
+        box-shadow: 0 4px 14px rgba(27, 28, 30, 0.08);
+      }
+      .geo-row {
+        display: none;
+      }
+      .geo-drop {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        background: var(--panel);
+        border-bottom: 1px solid var(--line2);
+        box-shadow: 0 18px 36px rgba(27, 28, 30, 0.16);
+        z-index: 210;
+        max-height: 55vh;
+        overflow-y: auto;
+        padding: 8px 0;
+      }
+      .geo-drop[hidden] {
+        display: none;
+      }
+      .geo-item {
+        display: flex;
+        gap: 10px;
+        align-items: center;
+        width: 100%;
+        text-align: left;
+        padding: 12px 22px;
+        font-size: 14px;
+        transition: background 0.15s;
+      }
+      .geo-item:hover {
+        background: #f0eee4;
+      }
+      .geo-item.active {
+        color: var(--green);
+        font-weight: 600;
+        background: var(--green-soft);
+      }
+      .head-in {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        padding: 12px 0;
+        flex-wrap: nowrap;
+      }
+      .cat-btn {
+        display: flex;
+        align-items: center;
+        gap: 9px;
+        background: var(--green);
+        color: #fff;
+        font-weight: 600;
+        font-size: 14px;
+        padding: 11px 18px;
+        border-radius: var(--r-m);
+        transition:
+          background 0.15s,
+          transform 0.15s;
+        flex: 0 0 auto;
+      }
+      .cat-btn:hover {
+        background: var(--green-dark);
+        transform: translateY(-1px);
+      }
+      .cat-btn.open {
+        background: var(--green-dark);
+      }
+      .brand {
+        font-family: "Piazzolla", serif;
+        font-weight: 800;
+        font-size: 20px;
+        white-space: nowrap;
+        flex: 0 0 auto;
+      }
+      .brand span {
+        color: var(--green);
+      }
+      .search-box {
+        display: flex;
+        flex: 1;
+        min-width: 140px;
+        border: 2px solid var(--ink);
+        border-radius: 10px;
+        overflow: hidden;
+        background: var(--panel);
+        box-shadow: var(--shadow-soft);
+      }
+      .search-box input {
+        flex: 1;
+        border: none;
+        outline: none;
+        background: transparent;
+        padding: 11px 16px;
+        font-size: 16px;
+        min-width: 0;
+      }
+      .search-btn {
+        background: var(--ink);
+        color: #fff;
+        font-weight: 600;
+        font-size: 14px;
+        padding: 0 22px;
+        transition: background 0.15s;
+      }
+      .search-btn:hover {
+        background: #000;
+      }
+      .hicon {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 3px;
+        padding: 6px 10px;
+        border-radius: var(--r-m);
+        color: var(--dim);
+        transition:
+          color 0.15s,
+          background 0.15s;
+        flex: 0 0 auto;
+      }
+      .hicon:hover {
+        background: #eceae0;
+        color: var(--ink);
+      }
+      .hicon.active {
+        color: var(--green);
+      }
+      .hicon .lbl {
+        font-size: 11px;
+        font-weight: 500;
+        max-width: 90px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+      .search-heart {
+        display: none;
+      }
+      .pill {
+        position: absolute;
+        top: 0;
+        right: 2px;
+        min-width: 17px;
+        height: 17px;
+        border-radius: 9px;
+        background: var(--red);
+        color: #fff;
+        font-family: "JetBrains Mono", monospace;
+        font-size: 10px;
+        font-weight: 700;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0 4px;
+      }
+      .pill.zero {
+        display: none;
+      }
+      .cat-panel {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        background: var(--panel);
+        border-bottom: 1px solid var(--line2);
+        box-shadow: 0 18px 36px rgba(27, 28, 30, 0.16);
+        z-index: 210;
+        opacity: 0;
+        visibility: hidden;
+        transform: translateY(-14px);
+        transition:
+          opacity 0.28s ease,
+          transform 0.28s cubic-bezier(0.2, 0.9, 0.2, 1),
+          visibility 0.28s;
+      }
+      .cat-panel.open {
+        opacity: 1;
+        visibility: visible;
+        transform: none;
+      }
+      .cp-in {
+        display: grid;
+        grid-template-columns: 252px 1fr;
+        min-height: 400px;
+      }
+      .cp-left {
+        border-right: 1px solid var(--line);
+        background: #faf9f4;
+        padding: 14px 0;
+        max-height: 70vh;
+        overflow-y: auto;
+      }
+      .cp-item {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        width: 100%;
+        padding: 13px 18px;
+        font-size: 14px;
+        font-weight: 500;
+        color: var(--ink);
+        text-align: left;
+        border-left: 3px solid transparent;
+        transition:
+          background 0.15s,
+          color 0.15s;
+      }
+      .cp-item svg {
+        color: var(--green);
+        flex: 0 0 auto;
+      }
+      .cp-item:hover {
+        background: #f0eee4;
+      }
+      .cp-item.active {
+        background: var(--green-soft);
+        color: var(--green);
+        border-left-color: var(--green);
+        font-weight: 600;
+      }
+      .cp-item .cnt {
+        margin-left: auto;
+        font-family: "JetBrains Mono", monospace;
+        font-size: 10px;
+        color: var(--dim);
+      }
+      .cp-right {
+        padding: 24px 28px;
+        max-height: 70vh;
+        overflow-y: auto;
+      }
+      .cp-right.swap {
+        animation: cpSwap 0.28s ease;
+      }
+      @keyframes cpSwap {
+        from {
+          opacity: 0;
+          transform: translateX(10px);
+        }
+        to {
+          opacity: 1;
+          transform: none;
+        }
+      }
+      .cp-right-head {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+        flex-wrap: wrap;
+        margin-bottom: 6px;
+      }
+      .cp-right-head h4 {
+        font-family: "Piazzolla", serif;
+        font-size: 19px;
+      }
+      .cp-all {
+        display: inline-flex;
+        align-items: center;
+        gap: 7px;
+        color: var(--green);
+        font-weight: 600;
+        font-size: 14px;
+      }
+      .cp-all:hover {
+        text-decoration: underline;
+      }
+      .cp-right p {
+        font-size: 13px;
+        color: var(--dim);
+      }
+      .cp-sub {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+        gap: 10px;
+        margin-top: 18px;
+      }
+      .cp-sub-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 10px;
+        padding: 14px 16px;
+        border: 1px solid var(--line);
+        border-radius: var(--r-m);
+        background: var(--bg);
+        font-size: 13.5px;
+        text-align: left;
+        transition: all 0.15s;
+        color: var(--ink);
+      }
+      .cp-sub-item svg {
+        color: var(--line2);
+        flex: 0 0 auto;
+        transition: color 0.15s;
+      }
+      .cp-sub-item:hover {
+        border-color: var(--green);
+        background: var(--green-soft);
+      }
+      .cp-sub-item:hover svg {
+        color: var(--green);
+      }
+      .btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        font-weight: 600;
+        font-size: 14px;
+        background: var(--green);
+        color: #fff;
+        padding: 12px 22px;
+        border-radius: var(--r-m);
+        border: 1px solid var(--green);
+        transition:
+          background 0.15s,
+          transform 0.15s;
+      }
+      .btn:hover {
+        background: var(--green-dark);
+        transform: translateY(-1px);
+      }
+      .btn--ghost {
+        background: transparent;
+        color: var(--green);
+      }
+      .btn--ghost:hover {
+        background: var(--green-soft);
+      }
+      .btn--dim {
+        background: var(--panel);
+        color: var(--ink);
+        border-color: var(--line2);
+      }
+      .btn--dim:hover {
+        background: #f0eee4;
+      }
+      .btn--sm {
+        padding: 8px 14px;
+        font-size: 13px;
+        border-radius: 7px;
+      }
+      .btn--w {
+        width: 100%;
+      }
+      .stamp {
+        font-family: "JetBrains Mono", monospace;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.14em;
+        border: 2px double currentColor;
+        padding: 0.28em 0.7em;
+        display: inline-block;
+        font-size: 12px;
+        border-radius: 4px;
+      }
+      .stamp--green {
+        color: var(--green);
+      }
+      .stamp--red {
+        color: var(--red);
+      }
+      .panel {
+        display: none;
+        padding: 26px 0 80px;
+      }
+      .panel.active {
+        display: block;
+        animation: fade 0.22s ease;
+      }
+      @keyframes fade {
+        from {
+          opacity: 0;
+        }
+        to {
+          opacity: 1;
+        }
+      }
+      .sec-head {
+        display: flex;
+        align-items: flex-end;
+        justify-content: space-between;
+        gap: 16px;
+        margin: 40px 0 18px;
+        flex-wrap: wrap;
+      }
+      .sec-title {
+        font-family: "Piazzolla", serif;
+        font-weight: 800;
+        font-size: clamp(20px, 2.6vw, 28px);
+      }
+      .sec-title em {
+        font-style: normal;
+        color: var(--green);
+      }
+      .sec-note {
+        font-family: "JetBrains Mono", monospace;
+        font-size: 11px;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+        color: var(--dim);
+      }
+      .crumbs {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        flex-wrap: wrap;
+        font-family: "JetBrains Mono", monospace;
+        font-size: 11px;
+        letter-spacing: 0.08em;
+        color: var(--dim);
+        margin-bottom: 20px;
+      }
+      .crumbs button {
+        color: var(--dim);
+        font-family: inherit;
+        font-size: inherit;
+        letter-spacing: inherit;
+      }
+      .crumbs button:hover {
+        color: var(--green);
+        text-decoration: underline;
+      }
+      .crumbs .sep {
+        color: var(--line2);
+      }
+      .crumbs .cur {
+        color: var(--ink);
+      }
+      .promo-card {
+        display: none;
+      }
+      .slider {
+        position: relative;
+        border-radius: var(--r-l);
+        overflow: hidden;
+        box-shadow: var(--shadow-card);
+      }
+      .slides {
+        display: flex;
+        transition: transform 0.45s cubic-bezier(0.2, 0.9, 0.2, 1);
+      }
+      .slide {
+        flex: 0 0 100%;
+        padding: 38px 64px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 22px;
+        flex-wrap: wrap;
+        min-height: 170px;
+      }
+      .slide b {
+        font-family: "Piazzolla", serif;
+        font-size: clamp(19px, 3vw, 30px);
+        display: block;
+        line-height: 1.15;
+      }
+      .slide .sub {
+        font-size: 13.5px;
+        opacity: 0.85;
+        display: block;
+        margin-top: 8px;
+        max-width: 460px;
+      }
+      .slide--green {
+        background: var(--green);
+        color: #fff;
+      }
+      .slide--ink {
+        background: var(--ink);
+        color: #edebe2;
+      }
+      .slide--sand {
+        background: var(--sand);
+        color: var(--ink);
+      }
+      .slide .btn {
+        background: #fff;
+        color: var(--ink);
+        border-color: #fff;
+      }
+      .slide .btn:hover {
+        background: #f0eee4;
+      }
+      .slide--sand .btn {
+        background: var(--green);
+        color: #fff;
+        border-color: var(--green);
+      }
+      .slide--sand .btn:hover {
+        background: var(--green-dark);
+      }
+      .nav-arrow {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 42px;
+        height: 42px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.92);
+        color: var(--ink);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border: 1px solid var(--line2);
+        transition: all 0.15s;
+        z-index: 2;
+      }
+      .nav-arrow:hover {
+        color: var(--green);
+        border-color: var(--green);
+      }
+      .nav-arrow.prev {
+        left: 14px;
+      }
+      .nav-arrow.next {
+        right: 14px;
+      }
+      .dots {
+        position: absolute;
+        bottom: 14px;
+        left: 50%;
+        transform: translateX(-50%);
+        display: flex;
+        gap: 8px;
+      }
+      .dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.45);
+        padding: 0;
+        transition: all 0.2s;
+      }
+      .dot.active {
+        background: #fff;
+        width: 22px;
+        border-radius: 4px;
+      }
+      .cat-circles {
+        display: flex;
+        gap: 10px;
+        overflow-x: auto;
+        padding: 4px 2px 10px;
+      }
+      .cat-circle {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 7px;
+        flex: 0 0 auto;
+        padding: 6px 4px;
+      }
+      .cc-ico {
+        width: 64px;
+        height: 64px;
+        border-radius: 50%;
+        background: var(--panel);
+        border: 1px solid var(--line);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--green);
+        transition: all 0.15s;
+      }
+      .cat-circle:hover .cc-ico {
+        border-color: var(--green);
+        box-shadow: var(--shadow-card);
+      }
+      .cc-lbl {
+        font-size: 12px;
+        font-weight: 500;
+        color: var(--dim);
+      }
+      .sale-band {
+        background: var(--green);
+        border-radius: var(--r-l);
+        padding: 20px 14px 16px;
+        margin-top: 30px;
+        color: #fff;
+      }
+      .sb-head {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+        flex-wrap: wrap;
+      }
+      .sb-head b {
+        font-family: "Piazzolla", serif;
+        font-size: clamp(18px, 2.4vw, 24px);
+      }
+      .sb-note {
+        background: #fff;
+        color: var(--green);
+        font-weight: 700;
+        font-size: 11px;
+        border-radius: 8px;
+        padding: 6px 10px;
+        font-family: "JetBrains Mono", monospace;
+        letter-spacing: 0.06em;
+      }
+      .sb-sub {
+        font-size: 13px;
+        opacity: 0.85;
+        margin: 6px 0 14px;
+      }
+      .sale-band .hscroll {
+        padding: 2px 2px 6px;
+      }
+      .sale-band .pcard {
+        border: none;
+      }
+      .hscroll {
+        display: flex;
+        gap: 14px;
+        overflow-x: auto;
+        padding: 4px 2px 14px;
+        scroll-snap-type: x mandatory;
+      }
+      .hscroll .pcard {
+        flex: 0 0 200px;
+        scroll-snap-align: start;
+      }
+      .pgrid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 14px;
+      }
+      .pgrid .pcard {
+        min-width: 0;
+      }
+      .cat-layout .pgrid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+      @media (max-width: 1200px) {
+        .pgrid {
+          grid-template-columns: repeat(3, 1fr);
+        }
+        .cat-layout .pgrid {
+          grid-template-columns: repeat(3, 1fr);
+        }
+      }
+      @media (max-width: 900px) {
+        .cat-layout .pgrid {
+          grid-template-columns: repeat(2, 1fr);
+        }
+      }
+      @media (max-width: 640px) {
+        .pgrid {
+          grid-template-columns: repeat(2, 1fr);
+          gap: 10px;
+        }
+      }
+      @media (max-width: 360px) {
+        .pgrid {
+          gap: 8px;
+        }
+      }
+      .pcard {
+        background: var(--panel);
+        border: 1px solid var(--line);
+        border-radius: 14px;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        transition:
+          border-color 0.15s,
+          box-shadow 0.15s,
+          transform 0.15s;
+        cursor: pointer;
+      }
+      .pcard:hover {
+        border-color: var(--green);
+        box-shadow: var(--shadow-card);
+        transform: translateY(-2px);
+      }
+      .pcard-img {
+        position: relative;
+        aspect-ratio: 1/1;
+        border-bottom: 1px solid var(--line);
+        background: #f8f7f2;
+      }
+      .pcard-img img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+      .p-disc {
+        position: absolute;
+        left: 8px;
+        top: 8px;
+        background: var(--red);
+        color: #fff;
+        font-family: "JetBrains Mono", monospace;
+        font-size: 11px;
+        font-weight: 700;
+        padding: 3px 8px;
+        border-radius: var(--r-s);
+      }
+      .p-new {
+        position: absolute;
+        left: 8px;
+        bottom: 8px;
+        background: var(--amber);
+        color: #fff;
+        font-family: "JetBrains Mono", monospace;
+        font-size: 9px;
+        font-weight: 700;
+        letter-spacing: 0.1em;
+        padding: 4px 8px;
+        border-radius: 5px;
+      }
+      .heart {
+        position: absolute;
+        top: 8px;
+        right: 8px;
+        width: 34px;
+        height: 34px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.94);
+        border: 1px solid var(--line2);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--dim);
+        transition:
+          color 0.15s,
+          border-color 0.15s,
+          background 0.15s;
+        z-index: 2;
+      }
+      .heart:hover {
+        color: var(--red);
+        border-color: var(--red);
+      }
+      .heart.on {
+        color: var(--red);
+        border-color: var(--red);
+        background: #fff;
+      }
+      .heart.on svg {
+        fill: var(--red);
+      }
+      .pcard-body {
+        padding: 12px 12px 14px;
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+        flex: 1;
+        min-width: 0;
+      }
+      .p-prices {
+        display: flex;
+        align-items: baseline;
+        gap: 8px;
+        flex-wrap: wrap;
+      }
+      .p-price {
+        font-family: "Piazzolla", serif;
+        font-weight: 800;
+        font-size: 17px;
+        white-space: nowrap;
+      }
+      .p-old {
+        color: var(--dim);
+        text-decoration: line-through;
+        font-size: 12px;
+        white-space: nowrap;
+      }
+      .p-name {
+        font-size: 13px;
+        font-weight: 500;
+        color: var(--ink);
+        line-height: 1.35;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        min-height: 2.7em;
+        overflow-wrap: break-word;
+      }
+      .p-rate {
+        font-size: 12px;
+        color: var(--dim);
+        margin-bottom: 4px;
+        display: flex;
+        align-items: center;
+        gap: 5px;
+      }
+      .p-rate .star {
+        color: var(--amber);
+        display: inline-flex;
+      }
+      .p-rate b {
+        color: var(--ink);
+      }
+      .p-add {
+        margin-top: auto;
+      }
+      .p-add.added {
+        background: var(--ink);
+        border-color: var(--ink);
+      }
+      .sk {
+        border-radius: var(--r-s);
+        background: #eceae0;
+        background-image: linear-gradient(
+          90deg,
+          #eceae0 25%,
+          #f7f6f0 50%,
+          #eceae0 75%
+        );
+        background-size: 200% 100%;
+        animation: sk 1.2s infinite;
+      }
+      @keyframes sk {
+        to {
+          background-position: -200% 0;
+        }
+      }
+      .sk-img {
+        aspect-ratio: 1/1;
+        border-radius: 0;
+      }
+      .sk-line {
+        height: 12px;
+        margin: 7px 0;
+      }
+      .sk-btn {
+        height: 34px;
+        margin-top: 8px;
+      }
+      .sk-card {
+        cursor: default;
+        pointer-events: none;
+      }
+      .cat-layout {
+        display: grid;
+        grid-template-columns: 290px 1fr;
+        gap: 24px;
+        align-items: start;
+      }
+      .cat-main {
+        min-width: 0;
+      }
+      .cat-list {
+        background: var(--panel);
+        border: 1px solid var(--line);
+        border-radius: var(--r-l);
+        padding: 8px;
+        position: sticky;
+        top: 90px;
+      }
+      .cl-item {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        width: 100%;
+        padding: 12px 14px;
+        border-radius: var(--r-m);
+        font-size: 14px;
+        font-weight: 500;
+        text-align: left;
+        transition:
+          background 0.15s,
+          color 0.15s;
+        color: var(--ink);
+      }
+      .cl-item svg {
+        color: var(--green);
+        flex: 0 0 auto;
+      }
+      .cl-item .cnt {
+        margin-left: auto;
+        font-family: "JetBrains Mono", monospace;
+        font-size: 10px;
+        color: var(--dim);
+      }
+      .cl-item .chev {
+        display: none;
+        margin-left: auto;
+        color: var(--line2);
+      }
+      .cl-item:hover {
+        background: #f0eee4;
+      }
+      .cl-item.active {
+        background: var(--green-soft);
+        color: var(--green);
+        font-weight: 600;
+      }
+      .toolbar {
+        display: flex;
+        gap: 12px;
+        flex-wrap: wrap;
+        align-items: center;
+        margin-bottom: 16px;
+      }
+      .select {
+        background: var(--panel);
+        color: var(--ink);
+        border: 1px solid var(--line2);
+        border-radius: var(--r-m);
+        padding: 11px 14px;
+        outline: none;
+        font-size: 16px;
+        max-width: 100%;
+      }
+      .chip {
+        font-family: "JetBrains Mono", monospace;
+        font-size: 11px;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        border: 1px solid var(--line2);
+        background: var(--panel);
+        color: var(--dim);
+        padding: 9px 15px;
+        border-radius: 20px;
+        transition: all 0.15s;
+      }
+      .chip--query {
+        border-color: var(--red);
+        color: var(--red);
+      }
+      .empty {
+        text-align: center;
+        padding: 64px 20px;
+        border: 1px dashed var(--line2);
+        border-radius: var(--r-l);
+        background: var(--panel);
+      }
+      .empty .stamp {
+        font-size: 16px;
+        margin-bottom: 16px;
+      }
+      .empty p {
+        color: var(--dim);
+        margin-bottom: 20px;
+      }
+      .cn-code {
+        font-family: "JetBrains Mono", monospace;
+        font-size: 10px;
+        font-weight: 700;
+        letter-spacing: 0.06em;
+        border: 1px solid var(--line2);
+        border-radius: 4px;
+        padding: 3px 7px;
+        background: var(--bg);
+        color: var(--ink);
+        display: inline-block;
+      }
+      .prod-grid {
+        display: grid;
+        grid-template-columns: 1.05fr 0.95fr;
+        gap: 40px;
+        align-items: start;
+      }
+      .gallery-main {
+        aspect-ratio: 4/3;
+        border: 1px solid var(--line);
+        border-radius: var(--r-l);
+        overflow: hidden;
+        background: var(--panel);
+        position: relative;
+      }
+      .gallery-main img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+      .gallery-main .p-disc {
+        left: 14px;
+        top: 14px;
+        font-size: 13px;
+      }
+      .pg-back,
+      .pg-actions {
+        display: none;
+      }
+      .pg-btn {
+        width: 44px;
+        height: 44px;
+        border-radius: 14px;
+        background: rgba(245, 244, 238, 0.92);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--ink);
+        transition: color 0.15s;
+      }
+      .pg-btn.on {
+        color: var(--red);
+      }
+      .pg-btn.on svg {
+        fill: var(--red);
+      }
+      .thumbs {
+        display: flex;
+        gap: 10px;
+        margin-top: 12px;
+        overflow-x: auto;
+        padding-bottom: 6px;
+      }
+      .thumb {
+        width: 84px;
+        height: 64px;
+        border-radius: var(--r-m);
+        overflow: hidden;
+        border: 2px solid var(--line);
+        padding: 0;
+        transition: border-color 0.15s;
+        flex: 0 0 auto;
+        background: var(--panel);
+      }
+      .thumb img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+      .thumb.active {
+        border-color: var(--green);
+      }
+      .prod-cards {
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+      }
+      .p-card {
+        border: 1px solid var(--line);
+        background: var(--panel);
+        border-radius: var(--r-l);
+        padding: 18px;
+      }
+      .warr {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 13px;
+        font-weight: 600;
+        margin-bottom: 10px;
+      }
+      .warr svg {
+        color: var(--ink);
+      }
+      .warr .arr {
+        color: var(--dim);
+      }
+      .prod-info {
+        min-width: 0;
+      }
+      .prod-info h1 {
+        font-family: "Piazzolla", serif;
+        font-size: clamp(24px, 3.2vw, 36px);
+        line-height: 1.15;
+        margin: 0;
+        overflow-wrap: break-word;
+      }
+      .prod-desc {
+        color: var(--dim);
+        margin-top: 10px;
+        max-width: 480px;
+      }
+      .prod-price-row {
+        display: flex;
+        align-items: baseline;
+        gap: 14px;
+        flex-wrap: wrap;
+      }
+      .prod-price {
+        font-family: "Piazzolla", serif;
+        font-weight: 800;
+        font-size: 32px;
+        color: var(--ink);
+      }
+      .prod-disc {
+        color: var(--red);
+        font-weight: 700;
+        font-family: "JetBrains Mono", monospace;
+        font-size: 14px;
+      }
+      .prod-old {
+        color: var(--dim);
+        text-decoration: line-through;
+        font-size: 15px;
+      }
+      .buy-row {
+        display: flex;
+        gap: 12px;
+        align-items: stretch;
+        flex-wrap: wrap;
+      }
+      .qty {
+        display: flex;
+        align-items: center;
+        border: 1px solid var(--line2);
+        border-radius: var(--r-m);
+        overflow: hidden;
+        background: var(--panel);
+      }
+      .qty button {
+        width: 42px;
+        height: 46px;
+        font-weight: 700;
+        font-size: 17px;
+        color: var(--green);
+      }
+      .qty button:hover {
+        background: var(--green-soft);
+      }
+      .qty span {
+        width: 44px;
+        text-align: center;
+        font-family: "JetBrains Mono", monospace;
+        font-size: 15px;
+      }
+      .heart-lg {
+        width: 46px;
+        height: 46px;
+        border-radius: var(--r-m);
+        border: 1px solid var(--line2);
+        background: var(--panel);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--dim);
+        transition: all 0.15s;
+      }
+      .heart-lg:hover {
+        color: var(--red);
+        border-color: var(--red);
+      }
+      .heart-lg.on {
+        color: var(--red);
+        border-color: var(--red);
+      }
+      .heart-lg.on svg {
+        fill: var(--red);
+      }
+      .ship-result {
+        margin-top: 12px;
+        font-size: 14px;
+        color: var(--dim);
+      }
+      .ship-result b {
+        color: var(--ink);
+      }
+      .sum-label {
+        font-family: "JetBrains Mono", monospace;
+        font-size: 10px;
+        letter-spacing: 0.16em;
+        color: var(--dim);
+        text-transform: uppercase;
+        display: block;
+        margin: 0 0 8px;
+      }
+      .legal-box {
+        border: 1px solid var(--green);
+        background: var(--green-soft);
+        border-radius: var(--r-l);
+        padding: 18px;
+        display: flex;
+        gap: 16px;
+        align-items: flex-start;
+      }
+      .legal-box p {
+        font-size: 13px;
+        color: var(--ink);
+        margin-top: 2px;
+      }
+      .legal-box .mono {
+        font-size: 10px;
+        letter-spacing: 0.12em;
+        color: var(--dim);
+        display: block;
+        margin-top: 6px;
+      }
+      .buy-bar {
+        display: none;
+        position: fixed;
+        left: 0;
+        right: 0;
+        bottom: calc(57px + env(safe-area-inset-bottom));
+        z-index: 290;
+        padding: 12px 14px;
+        background: linear-gradient(to top, var(--bg) 70%, transparent);
+      }
+      .buy-bar .btn {
+        flex: 1;
+        border-radius: 14px;
+        padding: 13px;
+        font-size: 16px;
+      }
+      .buy-bar .btn small {
+        display: block;
+        font-size: 11px;
+        font-weight: 500;
+        opacity: 0.85;
+        letter-spacing: 0.02em;
+      }
+      .spec-table {
+        width: 100%;
+        border-collapse: collapse;
+        background: var(--panel);
+        border: 1px solid var(--line);
+        border-radius: var(--r-l);
+        overflow: hidden;
+      }
+      .spec-table td {
+        padding: 12px 18px;
+        border-bottom: 1px solid var(--line);
+        font-size: 14px;
+      }
+      .spec-table tr:last-child td {
+        border-bottom: none;
+      }
+      .spec-table td:first-child {
+        font-family: "JetBrains Mono", monospace;
+        font-size: 11px;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        color: var(--dim);
+        width: 40%;
+      }
+      .review {
+        border: 1px solid var(--line);
+        background: var(--panel);
+        border-radius: var(--r-l);
+        padding: 20px;
+        margin-bottom: 12px;
+      }
+      .review q {
+        quotes: none;
+        font-size: 14px;
+        display: block;
+        margin-bottom: 12px;
+      }
+      .review-foot {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 10px;
+        flex-wrap: wrap;
+      }
+      .review-foot b {
+        font-size: 13px;
+      }
+      .review-foot .mono {
+        font-size: 10px;
+        letter-spacing: 0.1em;
+        color: var(--dim);
+        display: block;
+      }
+      .cart-grid {
+        display: grid;
+        grid-template-columns: 1.15fr 0.85fr;
+        gap: 32px;
+        align-items: start;
+      }
+      .cart-grid > * {
+        min-width: 0;
+      }
+      .cline {
+        display: grid;
+        grid-template-columns: 82px 1fr auto;
+        gap: 15px;
+        border: 1px solid var(--line);
+        background: var(--panel);
+        border-radius: var(--r-l);
+        padding: 14px;
+        margin-bottom: 12px;
+        align-items: center;
+      }
+      .cline img {
+        width: 82px;
+        height: 82px;
+        object-fit: cover;
+        border-radius: var(--r-m);
+        border: 1px solid var(--line);
+      }
+      .cline h5 {
+        font-family: "Piazzolla", serif;
+        font-weight: 700;
+        font-size: 15px;
+        overflow-wrap: break-word;
+      }
+      .cline .mono {
+        font-size: 9px;
+        letter-spacing: 0.14em;
+        color: var(--dim);
+      }
+      .cline .qty {
+        margin-top: 8px;
+        width: max-content;
+      }
+      .cline .qty button {
+        width: 30px;
+        height: 30px;
+        font-size: 14px;
+      }
+      .cline .qty span {
+        width: 34px;
+        font-size: 13px;
+      }
+      .cline-right {
+        text-align: right;
+        display: flex;
+        flex-direction: column;
+        gap: 11px;
+        align-items: flex-end;
+      }
+      .cline-price {
+        font-family: "Piazzolla", serif;
+        font-weight: 800;
+        font-size: 17px;
+        color: var(--green);
+      }
+      .cline-del {
+        font-family: "JetBrains Mono", monospace;
+        font-size: 10px;
+        letter-spacing: 0.12em;
+        color: var(--red);
+      }
+      .summary {
+        border: 1px solid var(--line);
+        background: var(--panel);
+        border-radius: var(--r-l);
+        padding: 24px;
+        position: sticky;
+        top: 120px;
+      }
+      .summary h3 {
+        font-family: "Piazzolla", serif;
+        font-size: 18px;
+        margin-bottom: 16px;
+      }
+      .sum-row {
+        display: flex;
+        justify-content: space-between;
+        gap: 12px;
+        font-size: 14px;
+        padding: 9px 0;
+        border-bottom: 1px dashed var(--line2);
+        color: var(--dim);
+      }
+      .sum-row span:last-child {
+        font-family: "JetBrains Mono", monospace;
+        color: var(--ink);
+        white-space: nowrap;
+      }
+      .sum-row .free {
+        color: var(--green);
+        font-weight: 700;
+      }
+      .sum-total {
+        display: flex;
+        justify-content: space-between;
+        font-family: "Piazzolla", serif;
+        font-weight: 800;
+        font-size: 22px;
+        padding-top: 14px;
+      }
+      .sum-total span:last-child {
+        color: var(--green);
+      }
+      .radios {
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+      }
+      .radios input {
+        display: none;
+      }
+      .radios label {
+        border: 1px solid var(--line2);
+        border-radius: 7px;
+        padding: 9px 14px;
+        font-size: 13px;
+        cursor: pointer;
+        color: var(--dim);
+        transition: all 0.15s;
+      }
+      .radios input:checked + label {
+        border-color: var(--green);
+        color: var(--green);
+        background: var(--green-soft);
+        font-weight: 600;
+      }
+      .ck-form label {
+        font-family: "JetBrains Mono", monospace;
+        font-size: 10px;
+        letter-spacing: 0.16em;
+        text-transform: uppercase;
+        display: block;
+        margin: 15px 0 7px;
+        color: var(--dim);
+      }
+      .ck-form input,
+      .ck-form select {
+        width: 100%;
+        background: var(--panel);
+        border: 1px solid var(--line2);
+        border-radius: var(--r-m);
+        color: var(--ink);
+        padding: 12px 14px;
+        outline: none;
+        font-size: 16px;
+        transition: border-color 0.15s;
+      }
+      .ck-form input:focus,
+      .ck-form select:focus {
+        border-color: var(--green);
+      }
+      .ck-form input.err {
+        border-color: var(--red);
+      }
+      .row2 {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 14px;
+      }
+      .cert {
+        max-width: 580px;
+        margin: 26px auto;
+        border: 3px dashed var(--green);
+        border-radius: 14px;
+        background: var(--panel);
+        padding: 42px 34px;
+        text-align: center;
+      }
+      .cert h2 {
+        font-family: "Piazzolla", serif;
+        font-weight: 800;
+        font-size: 24px;
+        margin: 18px 0 6px;
+      }
+      .cert .num {
+        font-family: "JetBrains Mono", monospace;
+        letter-spacing: 0.22em;
+        color: var(--green);
+        font-weight: 700;
+        margin-bottom: 22px;
+      }
+      .cert-lines {
+        text-align: left;
+        max-width: 400px;
+        margin: 0 auto 22px;
+      }
+      .cert-lines div {
+        display: flex;
+        justify-content: space-between;
+        gap: 14px;
+        border-bottom: 1px dashed var(--line2);
+        padding: 8px 0;
+        font-family: "JetBrains Mono", monospace;
+        font-size: 11px;
+        letter-spacing: 0.06em;
+        color: var(--dim);
+      }
+      .cert-lines b {
+        color: var(--ink);
+      }
+      .cert small {
+        display: block;
+        font-family: "JetBrains Mono", monospace;
+        font-size: 10px;
+        letter-spacing: 0.1em;
+        color: var(--dim);
+        margin-top: 18px;
+        line-height: 1.9;
+      }
+      .pf-top {
+        display: grid;
+        grid-template-columns: 340px 1fr;
+        gap: 16px;
+        margin-bottom: 16px;
+        align-items: stretch;
+      }
+      .pf-top > * {
+        min-width: 0;
+      }
+      .mcard {
+        background: var(--ink);
+        color: #f1efe6;
+        border-radius: 14px;
+        padding: 26px;
+        box-shadow: var(--shadow-card);
+      }
+      .mcard-top {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        gap: 12px;
+        flex-wrap: wrap;
+      }
+      .mcard-brand {
+        font-family: "Piazzolla", serif;
+        font-weight: 800;
+        font-size: 16px;
+      }
+      .mcard .stamp {
+        color: #9ed3ae;
+        font-size: 10px;
+      }
+      .mcard-name {
+        font-family: "Piazzolla", serif;
+        font-weight: 800;
+        font-size: 25px;
+        margin: 24px 0 4px;
+        word-break: break-word;
+      }
+      .mcard-num {
+        font-family: "JetBrains Mono", monospace;
+        font-size: 12px;
+        letter-spacing: 0.26em;
+        color: #9ed3ae;
+      }
+      .mcard-pts {
+        font-family: "JetBrains Mono", monospace;
+        font-size: 11px;
+        letter-spacing: 0.12em;
+        color: #b9bdb2;
+        margin-top: 14px;
+      }
+      .mcard-pts b {
+        color: #9ed3ae;
+        font-size: 15px;
+      }
+      .pstats {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+        gap: 12px;
+      }
+      .pstat {
+        border: 1px solid var(--line);
+        background: var(--panel);
+        border-radius: var(--r-l);
+        padding: 16px;
+        min-width: 0;
+      }
+      .pstat b {
+        font-family: "Piazzolla", serif;
+        font-size: 24px;
+        color: var(--green);
+        display: block;
+      }
+      .pstat span {
+        font-family: "JetBrains Mono", monospace;
+        font-size: 9px;
+        letter-spacing: 0.14em;
+        color: var(--dim);
+        text-transform: uppercase;
+      }
+      .pf-layout {
+        display: grid;
+        grid-template-columns: 300px 1fr;
+        gap: 16px;
+        align-items: start;
+      }
+      .pf-layout > * {
+        min-width: 0;
+      }
+      .pm-menu {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+        background: var(--panel);
+        border: 1px solid var(--line);
+        border-radius: var(--r-l);
+        padding: 8px;
+        position: sticky;
+        top: 90px;
+      }
+      .pm-item {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 11px 12px;
+        border-radius: var(--r-m);
+        font-size: 14px;
+        font-weight: 500;
+        color: var(--ink);
+        text-align: left;
+        transition:
+          background 0.15s,
+          color 0.15s;
+        width: 100%;
+      }
+      .pm-item svg {
+        color: var(--dim);
+        flex: 0 0 auto;
+      }
+      .pm-item:hover {
+        background: #f0eee4;
+      }
+      .pm-item.active {
+        background: var(--green-soft);
+        color: var(--green);
+        font-weight: 600;
+      }
+      .pm-item.active svg {
+        color: var(--green);
+      }
+      .pm-item--red {
+        color: var(--red);
+      }
+      .pm-item--red svg {
+        color: var(--red);
+      }
+      .pm-item--red:hover {
+        background: #fbeae6;
+      }
+      .pm-badge {
+        margin-left: auto;
+        min-width: 18px;
+        height: 18px;
+        border-radius: 9px;
+        background: var(--red);
+        color: #fff;
+        font-family: "JetBrains Mono", monospace;
+        font-size: 10px;
+        font-weight: 700;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0 5px;
+      }
+      .pm-content {
+        background: var(--panel);
+        border: 1px solid var(--line);
+        border-radius: var(--r-l);
+        padding: 22px;
+        min-height: 340px;
+        min-width: 0;
+      }
+      .pm-h {
+        font-family: "Piazzolla", serif;
+        font-size: 19px;
+        margin-bottom: 14px;
+      }
+      .pm-p {
+        font-size: 14px;
+        color: var(--dim);
+        margin-bottom: 14px;
+        max-width: 560px;
+      }
+      .pm-row {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        border: 1px solid var(--line);
+        border-radius: var(--r-m);
+        padding: 14px;
+        margin-bottom: 10px;
+        flex-wrap: wrap;
+        background: var(--panel);
+      }
+      .pm-row b {
+        font-size: 14px;
+      }
+      .pm-row .sub {
+        font-size: 12px;
+        color: var(--dim);
+        display: block;
+        width: 100%;
+      }
+      .pm-row > svg {
+        color: var(--green);
+        flex: 0 0 auto;
+      }
+      .dot-unread {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: var(--red);
+        flex: 0 0 auto;
+      }
+      .social-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+        gap: 10px;
+      }
+      .social-btn {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        border: 1px solid var(--line);
+        border-radius: var(--r-m);
+        padding: 14px;
+        font-weight: 600;
+        font-size: 14px;
+        transition: all 0.15s;
+      }
+      .social-btn:hover {
+        border-color: var(--green);
+        color: var(--green);
+        background: var(--green-soft);
+      }
+      .lang-btns {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+      }
+      .lang-btn {
+        flex: 1;
+        max-width: 180px;
+        border: 1px solid var(--line2);
+        border-radius: var(--r-m);
+        padding: 14px;
+        font-weight: 600;
+        text-align: center;
+        transition: all 0.15s;
+      }
+      .lang-btn.active {
+        border-color: var(--green);
+        background: var(--green-soft);
+        color: var(--green);
+      }
+      .order {
+        border: 1px solid var(--line);
+        background: var(--panel);
+        border-radius: var(--r-m);
+        padding: 16px 18px;
+        margin-bottom: 10px;
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        flex-wrap: wrap;
+      }
+      .order-num {
+        font-family: "JetBrains Mono", monospace;
+        font-weight: 700;
+        letter-spacing: 0.08em;
+        color: var(--green);
+      }
+      .order-meta {
+        font-size: 12px;
+        color: var(--dim);
+      }
+      .order-total {
+        margin-left: auto;
+        font-family: "Piazzolla", serif;
+        font-weight: 800;
+        font-size: 17px;
+      }
+      .subpage {
+        position: fixed;
+        inset: 0;
+        z-index: 450;
+        background: var(--bg);
+        display: flex;
+        flex-direction: column;
+        transform: translateX(100%);
+        transition: transform 0.3s cubic-bezier(0.2, 0.9, 0.2, 1);
+      }
+      .subpage.open {
+        transform: none;
+      }
+      .subpage[hidden] {
+        display: none;
+      }
+      .sp-head {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 10px 14px;
+        border-bottom: 1px solid var(--line2);
+        background: var(--bg);
+      }
+      .sp-back {
+        width: 40px;
+        height: 40px;
+        border-radius: 12px;
+        background: var(--panel);
+        border: 1px solid var(--line2);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex: 0 0 auto;
+      }
+      .sp-title {
+        font-family: "Piazzolla", serif;
+        font-size: 17px;
+        font-weight: 700;
+      }
+      .sp-body {
+        flex: 1;
+        overflow-y: auto;
+        padding: 16px 16px 60px;
+      }
+      .sp-body .sec-head {
+        margin: 10px 0 14px;
+      }
+      .sp-body .info-cards {
+        margin-bottom: 20px;
+      }
+      .auth-overlay {
+        position: fixed;
+        inset: 0;
+        background: rgba(27, 28, 30, 0.55);
+        z-index: 500;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+      }
+      .auth-overlay[hidden] {
+        display: none !important;
+      }
+      .auth-box {
+        background: var(--panel);
+        border-radius: 14px;
+        max-width: 430px;
+        width: 100%;
+        padding: 28px;
+        animation: fade 0.25s ease;
+        max-height: 92vh;
+        overflow-y: auto;
+        box-shadow: var(--shadow-card);
+      }
+      .auth-head {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 18px;
+        gap: 12px;
+      }
+      .auth-head b {
+        font-family: "Piazzolla", serif;
+        font-size: 21px;
+      }
+      .auth-close {
+        width: 34px;
+        height: 34px;
+        border-radius: var(--r-m);
+        border: 1px solid var(--line2);
+        font-size: 19px;
+        color: var(--dim);
+        transition: all 0.15s;
+        flex: 0 0 auto;
+      }
+      .auth-close:hover {
+        border-color: var(--red);
+        color: var(--red);
+      }
+      .auth-tabs {
+        display: flex;
+        border: 1px solid var(--line2);
+        border-radius: var(--r-m);
+        overflow: hidden;
+        margin-bottom: 20px;
+      }
+      .auth-tabs button {
+        flex: 1;
+        padding: 11px;
+        font-weight: 600;
+        font-size: 14px;
+        color: var(--dim);
+        transition: all 0.15s;
+      }
+      .auth-tabs button.active {
+        background: var(--green);
+        color: #fff;
+      }
+      .auth-msg {
+        min-height: 20px;
+        font-size: 13px;
+        margin-top: 12px;
+        text-align: center;
+      }
+      .auth-msg.err {
+        color: var(--red);
+      }
+      .auth-msg.ok {
+        color: var(--green);
+      }
+      .auth-note {
+        font-size: 11px;
+        color: var(--dim);
+        margin-top: 18px;
+        border-top: 1px dashed var(--line2);
+        padding-top: 12px;
+        text-align: center;
+        line-height: 1.7;
+      }
+      .info-cards {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+        gap: 16px;
+        margin-bottom: 36px;
+      }
+      .info-card {
+        border: 1px solid var(--line);
+        background: var(--panel);
+        border-radius: var(--r-l);
+        padding: 22px;
+        min-width: 0;
+      }
+      .info-card h3 {
+        font-family: "Piazzolla", serif;
+        font-size: 17px;
+        margin-bottom: 8px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+      .info-card h3 svg {
+        color: var(--green);
+      }
+      .info-card p {
+        font-size: 14px;
+        color: var(--dim);
+      }
+      .table-wrap {
+        overflow-x: auto;
+        border: 1px solid var(--line);
+        border-radius: var(--r-l);
+        background: var(--panel);
+      }
+      .dtable {
+        width: 100%;
+        border-collapse: collapse;
+        min-width: 560px;
+      }
+      .dtable th {
+        font-family: "JetBrains Mono", monospace;
+        font-size: 10px;
+        letter-spacing: 0.16em;
+        text-transform: uppercase;
+        color: var(--dim);
+        text-align: left;
+        padding: 14px 18px;
+        border-bottom: 1px solid var(--line2);
+        background: #faf9f4;
+      }
+      .dtable td {
+        padding: 13px 18px;
+        border-bottom: 1px solid var(--line);
+        font-size: 14px;
+      }
+      .dtable tr:last-child td {
+        border-bottom: none;
+      }
+      .dtable td:last-child {
+        color: var(--dim);
+        font-size: 13px;
+      }
+      .faq-item {
+        border-bottom: 1px solid var(--line2);
+      }
+      .faq-item summary {
+        list-style: none;
+        cursor: pointer;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 16px;
+        font-family: "Piazzolla", serif;
+        font-weight: 700;
+        font-size: 17px;
+        padding: 21px 4px;
+        transition: color 0.15s;
+      }
+      .faq-item summary::-webkit-details-marker {
+        display: none;
+      }
+      .faq-item summary:hover {
+        color: var(--green);
+      }
+      .faq-item .plus {
+        font-family: "JetBrains Mono", monospace;
+        font-size: 22px;
+        color: var(--green);
+        transition: transform 0.2s;
+        flex: 0 0 auto;
+      }
+      .faq-item[open] .plus {
+        transform: rotate(45deg);
+      }
+      .faq-item p {
+        padding: 0 4px 22px;
+        color: var(--dim);
+        max-width: 720px;
+      }
+      footer {
+        background: var(--ink);
+        color: #c9cdc2;
+        margin-top: 40px;
+      }
+      .foot-grid {
+        display: grid;
+        grid-template-columns: 1.4fr 1fr 1fr 1fr;
+        gap: 32px;
+        padding: 56px 0 40px;
+      }
+      .foot-grid h4 {
+        font-family: "JetBrains Mono", monospace;
+        font-size: 10px;
+        letter-spacing: 0.2em;
+        text-transform: uppercase;
+        color: #9ed3ae;
+        margin-bottom: 16px;
+      }
+      .foot-grid a {
+        display: block;
+        font-size: 14px;
+        margin-bottom: 10px;
+        color: #c9cdc2;
+        transition: color 0.15s;
+      }
+      .foot-grid a:hover {
+        color: #fff;
+      }
+      .foot-brand {
+        font-family: "Piazzolla", serif;
+        font-weight: 800;
+        font-size: 21px;
+        color: #fff;
+      }
+      .foot-brand span {
+        color: #9ed3ae;
+      }
+      .foot-desc {
+        font-size: 13px;
+        margin: 12px 0 16px;
+        max-width: 260px;
+      }
+      .foot-bottom {
+        border-top: 1px solid #33352f;
+        padding: 16px 0;
+        font-family: "JetBrains Mono", monospace;
+        font-size: 10px;
+        letter-spacing: 0.1em;
+        color: #8a8e84;
+        text-align: center;
+      }
+      .bottomnav {
+        display: none;
+        position: fixed;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        z-index: 300;
+        background: #ffffff;
+        border-top: 1px solid var(--line2);
+        grid-template-columns: repeat(5, 1fr);
+        padding-bottom: env(safe-area-inset-bottom);
+      }
+      .bottomnav button {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 4px;
+        padding: 9px 2px 11px;
+        color: var(--dim);
+        position: relative;
+        font-family: "JetBrains Mono", monospace;
+        font-size: 9px;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+      }
+      .bottomnav button.active {
+        color: var(--green);
+      }
+      .bbadge {
+        position: absolute;
+        top: 3px;
+        right: calc(50% - 22px);
+        min-width: 16px;
+        height: 16px;
+        border-radius: 8px;
+        background: var(--red);
+        color: #fff;
+        font-size: 10px;
+        font-weight: 700;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0 4px;
+      }
+      .bbadge.zero {
+        display: none;
+      }
+      .toast {
+        position: fixed;
+        left: 20px;
+        bottom: 20px;
+        z-index: 600;
+        background: var(--ink);
+        color: #fff;
+        border-radius: var(--r-m);
+        font-family: "JetBrains Mono", monospace;
+        font-size: 12px;
+        letter-spacing: 0.08em;
+        padding: 13px 18px;
+        transform: translateY(160%);
+        transition: transform 0.3s ease;
+        pointer-events: none;
+        max-width: calc(100% - 40px);
+      }
+      .toast.show {
+        transform: none;
+      }
+      .toast:empty {
+        display: none;
+      }
+      @media (max-width: 1200px) {
+        .head-in {
+          gap: 12px;
+        }
+        .brand {
+          font-size: 18px;
+        }
+        .cp-in {
+          grid-template-columns: 220px 1fr;
+        }
+        .prod-grid {
+          gap: 28px;
+        }
+        .pf-top {
+          grid-template-columns: 300px 1fr;
+        }
+        .pf-layout {
+          grid-template-columns: 260px 1fr;
+        }
+      }
+      @media (max-width: 900px) {
+        .bottomnav {
+          display: grid;
+        }
+        .panel {
+          padding: 14px 0 120px;
+        }
+        .sec-head {
+          margin: 22px 0 14px;
+        }
+        .cart-grid,
+        .pf-grid,
+        .prod-grid,
+        .pf-top,
+        .pf-layout {
+          grid-template-columns: 1fr;
+        }
+        .summary,
+        .pm-menu,
+        .cat-list {
+          position: static;
+        }
+        .brand,
+        .cat-btn,
+        .hicon:not(.search-heart) {
+          display: none;
+        }
+        .head-in {
+          gap: 10px;
+          padding: 10px 0;
+        }
+        .geo-row {
+          display: flex;
+          align-items: center;
+          gap: 8px;
+          padding: 10px 0 8px;
+          font-weight: 600;
+          font-size: 15px;
+        }
+        .geo-row svg {
+          color: var(--ink);
+        }
+        .geo-row .geo-lbl {
+          margin-left: auto;
+          font-size: 12px;
+          color: var(--dim);
+          font-weight: 400;
+        }
+        .search-box {
+          border: none;
+          background: #eceae3;
+          box-shadow: none;
+          border-radius: 12px;
+        }
+        .search-box input {
+          padding: 12px 16px;
+        }
+        .search-btn {
+          display: none;
+        }
+        .search-heart {
+          display: flex;
+          flex-direction: row;
+          padding: 8px;
+        }
+        .promo-card {
+          display: flex;
+          align-items: center;
+          gap: 12px;
+          background: #edebe3;
+          border-radius: 14px;
+          padding: 14px 16px;
+          margin: 2px 0 14px;
+          text-align: left;
+        }
+        .promo-card .pc-ico {
+          width: 44px;
+          height: 44px;
+          border-radius: 12px;
+          background: var(--green);
+          color: #fff;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          flex: 0 0 auto;
+        }
+        .promo-card b {
+          font-size: 14px;
+          display: block;
+        }
+        .promo-card .pc-sub {
+          font-size: 12px;
+          color: var(--dim);
+        }
+        .promo-card .arr {
+          margin-left: auto;
+          color: var(--dim);
+          flex: 0 0 auto;
+        }
+        .cat-circles {
+          display: grid;
+          grid-template-columns: repeat(5, 1fr);
+          gap: 4px;
+          overflow: visible;
+          padding: 2px 0 8px;
+        }
+        .cat-circle {
+          width: auto;
+        }
+        .cc-ico {
+          width: 56px;
+          height: 56px;
+        }
+        .sale-band {
+          margin-top: 22px;
+        }
+        .cat-layout {
+          display: block;
+        }
+        .cat-list {
+          border: none;
+          background: transparent;
+          padding: 0;
+          border-radius: 0;
+        }
+        .cl-item {
+          background: var(--panel);
+          border: 1px solid var(--line);
+          border-radius: 12px;
+          margin-bottom: 8px;
+          padding: 14px 16px;
+        }
+        .cl-item .cnt {
+          display: none;
+        }
+        .cl-item .chev {
+          display: block;
+        }
+        .cl-item.active {
+          border-color: var(--green);
+        }
+        #tab-product {
+          padding-bottom: 180px;
+        }
+        #tab-product .crumbs {
+          display: none;
+        }
+        .gallery-main {
+          aspect-ratio: 1/1;
+          border: none;
+          border-radius: 0;
+          margin-left: calc(50% - 50vw);
+          margin-right: calc(50% - 50vw);
+          background: #fff;
+        }
+        .gallery-main > .p-disc {
+          display: none;
+        }
+        .pg-back {
+          display: flex;
+          position: absolute;
+          top: 12px;
+          left: 12px;
+          z-index: 3;
+          width: 44px;
+          height: 44px;
+          border-radius: 14px;
+          background: rgba(245, 244, 238, 0.92);
+          align-items: center;
+          justify-content: center;
+        }
+        .pg-actions {
+          display: flex;
+          position: absolute;
+          top: 12px;
+          right: 12px;
+          gap: 8px;
+          z-index: 3;
+        }
+        .thumbs {
+          display: none;
+        }
+        .prod-info {
+          margin-top: 12px;
+        }
+        .prod-cards {
+          gap: 10px;
+        }
+        .p-card {
+          border: none;
+          border-radius: 16px;
+          box-shadow: var(--shadow-soft);
+          padding: 16px;
+        }
+        .prod-price {
+          font-size: 28px;
+        }
+        .buy-row {
+          display: none;
+        }
+        .buy-bar {
+          display: flex;
+        }
+        .toast {
+          bottom: calc(82px + env(safe-area-inset-bottom));
+        }
+        footer {
+          display: none;
+        }
+      }
+      @media (max-width: 560px) {
+        .wrap {
+          padding: 0 14px;
+        }
+        .hscroll .pcard {
+          flex: 0 0 160px;
+        }
+        .cline {
+          grid-template-columns: 64px 1fr;
+          gap: 12px;
+        }
+        .cline img {
+          width: 64px;
+          height: 64px;
+        }
+        .cline-right {
+          grid-column: 1/-1;
+          flex-direction: row;
+          justify-content: space-between;
+          align-items: center;
+          gap: 8px;
+        }
+        .row2 {
+          grid-template-columns: 1fr;
+        }
+        .cert {
+          padding: 30px 20px;
+          margin: 16px auto;
+        }
+        .auth-overlay {
+          padding: 12px;
+        }
+        .auth-box {
+          padding: 22px;
+        }
+        .qty button {
+          width: 38px;
+          height: 42px;
+        }
+        .prod-price {
+          font-size: 25px;
+        }
+        .spec-table td {
+          padding: 10px 12px;
+          font-size: 13px;
+        }
+        .order {
+          gap: 10px;
+        }
+        .dtable th,
+        .dtable td {
+          padding: 11px 12px;
+        }
+        .pm-content {
+          padding: 16px;
+        }
+        .slide {
+          padding: 26px 52px;
+        }
+        .nav-arrow {
+          width: 36px;
+          height: 36px;
+        }
+        .nav-arrow.prev {
+          left: 8px;
+        }
+        .nav-arrow.next {
+          right: 8px;
+        }
+      }
+      @media (max-width: 400px) {
+        .pcard-body {
+          padding: 10px 10px 12px;
+        }
+        .p-price {
+          font-size: 15px;
+        }
+        .p-add {
+          padding: 7px 8px;
+          font-size: 12px;
+        }
+        .foot-grid {
+          grid-template-columns: 1fr;
+        }
+        .bottomnav button {
+          font-size: 8px;
+        }
+        .cat-circles {
+          grid-template-columns: repeat(4, 1fr);
+        }
+      }
+      @media (prefers-reduced-motion: reduce) {
+        *,
+        *::before,
+        *::after {
+          animation: none !important;
+          transition: none !important;
+        }
+        .sk {
+          background: #eceae0;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header id="siteHeader">
+      <div class="wrap">
+        <div class="geo-row" id="geoRow">
+          <svg
+            width="18"
+            height="18"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <path d="M12 21s-7-6.2-7-11a7 7 0 0 1 14 0c0 4.8-7 11-7 11z" />
+            <circle cx="12" cy="10" r="2.5" />
+          </svg>
+          <span id="geoName">Россия</span>
+          <svg
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <path d="M6 9l6 6 6-6" />
+          </svg>
+          <span class="geo-lbl">страна доставки</span>
+        </div>
+        <div class="head-in">
+          <button
+            class="cat-btn"
+            id="catBtn"
+            aria-expanded="false"
+            aria-controls="catPanel"
+            aria-label="Открыть каталог"
+          >
+            <svg
+              width="18"
+              height="18"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <rect x="3" y="3" width="7" height="7" />
+              <rect x="14" y="3" width="7" height="7" />
+              <rect x="3" y="14" width="7" height="7" />
+              <rect x="14" y="14" width="7" height="7" />
+            </svg>
+            <span>Каталог</span>
+          </button>
+          <a class="brand" href="#" data-tab="home"
+            >ЛЕГАЛЬНО<span>.МАРКЕТ</span></a
+          >
+          <form class="search-box" id="searchForm" role="search">
+            <input
+              id="searchInput"
+              type="text"
+              placeholder="Искать товары и категории"
+              autocomplete="off"
+            />
+            <button class="search-btn" type="submit">Найти</button>
+          </form>
+          <button
+            class="hicon search-heart"
+            data-tab="favs"
+            aria-label="Избранное"
+          >
+            <svg
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <path
+                d="M12 21s-7.5-4.7-9.4-9.3C1.2 8 3.2 4.5 6.6 4.5c2 0 3.8 1.2 5.4 3 1.6-1.8 3.4-3 5.4-3 3.4 0 5.4 3.5 4 7.2C19.5 16.3 12 21 12 21z"
+              />
+            </svg>
+          </button>
+          <button class="hicon" data-tab="favs" aria-label="Избранное">
+            <svg
+              width="22"
+              height="22"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <path
+                d="M12 21s-7.5-4.7-9.4-9.3C1.2 8 3.2 4.5 6.6 4.5c2 0 3.8 1.2 5.4 3 1.6-1.8 3.4-3 5.4-3 3.4 0 5.4 3.5 4 7.2C19.5 16.3 12 21 12 21z"
+              />
+            </svg>
+            <span class="lbl">Избранное</span
+            ><span class="pill zero" id="badgeFav">0</span>
+          </button>
+          <button class="hicon" data-tab="cart" aria-label="Корзина">
+            <svg
+              width="22"
+              height="22"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <circle cx="9" cy="20" r="1.5" />
+              <circle cx="17" cy="20" r="1.5" />
+              <path d="M3 3h3l2.5 12.5h10L21 7H7" />
+            </svg>
+            <span class="lbl">Корзина</span
+            ><span class="pill zero" id="badgeCart">0</span>
+          </button>
+          <button class="hicon" data-tab="profile" aria-label="Профиль">
+            <svg
+              width="22"
+              height="22"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <circle cx="12" cy="8" r="4" />
+              <path d="M4 21c1.5-4 5-5.5 8-5.5s6.5 1.5 8 5.5" />
+            </svg>
+            <span class="lbl" id="profileLbl">Профиль</span>
+          </button>
+        </div>
+      </div>
+      <div class="geo-drop" id="geoDrop" hidden></div>
+      <div class="cat-panel" id="catPanel">
+        <div class="wrap cp-in">
+          <div class="cp-left" id="cpLeft"></div>
+          <div class="cp-right" id="cpRight"></div>
+        </div>
+      </div>
+    </header>
+    <main class="wrap">
+      <section class="panel active" id="tab-home">
+        <button class="promo-card" data-tab="delivery">
+          <span class="pc-ico"
+            ><svg
+              width="22"
+              height="22"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path
+                d="M2 6h12v10H2zM14 9h4l3 3v4h-7M6.5 19a1.8 1.8 0 1 0 0-3.6 1.8 1.8 0 0 0 0 3.6zM17.5 19a1.8 1.8 0 1 0 0-3.6 1.8 1.8 0 0 0 0 3.6z"
+              /></svg
+          ></span>
+          <span style="flex: 1"
+            ><b>Бесплатно по РФ от 5 000 ₽</b
+            ><span class="pc-sub"
+              >И доставка в 63 страны — с сертификатом легальности</span
+            ></span
+          >
+          <span class="arr"
+            ><svg
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path d="M9 5l7 7-7 7" /></svg
+          ></span>
+        </button>
+        <div class="slider">
+          <div class="slides" id="slides">
+            <div class="slide slide--green">
+              <div>
+                <b>Скидки до −25% на легальное</b
+                ><span class="sub"
+                  >Лучшие товары недели. Проверено юристами, заверено
+                  печатью.</span
+                >
+              </div>
+              <button class="btn" data-go="catalog" data-sort="disc">
+                Смотреть скидки
+              </button>
+            </div>
+            <div class="slide slide--ink">
+              <div>
+                <b>Бесплатно по РФ от 5 000 ₽</b
+                ><span class="sub"
+                  >И доставка в 63 страны, с сертификатом легальности к каждой
+                  посылке.</span
+                >
+              </div>
+              <button class="btn" data-go="delivery">Условия доставки</button>
+            </div>
+            <div class="slide slide--sand">
+              <div>
+                <b>Новинки недели на складе</b
+                ><span class="sub"
+                  >Свежая партия товаров, одобренных отделом легальности.</span
+                >
+              </div>
+              <button class="btn" data-go="catalog">К новинкам</button>
+            </div>
+          </div>
+          <button class="nav-arrow prev" id="slidePrev" aria-label="Назад">
+            <svg
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path d="M15 5l-7 7 7 7" />
+            </svg>
+          </button>
+          <button class="nav-arrow next" id="slideNext" aria-label="Вперёд">
+            <svg
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path d="M9 5l7 7-7 7" />
+            </svg>
+          </button>
+          <div class="dots" id="dots"></div>
+        </div>
+        <div class="sec-head"><h2 class="sec-title">Категории</h2></div>
+        <div class="cat-circles" id="catCircles"></div>
+        <div class="sec-head">
+          <h2 class="sec-title">Рекомендуем <em>вам</em></h2>
+          <span class="sec-note" id="homeCount"></span>
+        </div>
+        <div class="pgrid" id="homeGrid"></div>
+        <div class="sale-band">
+          <div class="sb-head">
+            <b>Скидки недели</b><span class="sb-note">Заказывайте выгодно</span>
+          </div>
+          <div class="sb-sub">
+            До −25% на товары, одобренные отделом легальности.
+          </div>
+          <div class="hscroll" id="saleRow"></div>
+        </div>
+      </section>
+      <section class="panel" id="tab-catalog">
+        <div class="cat-layout">
+          <aside class="cat-list" id="catList" aria-label="Категории"></aside>
+          <div class="cat-main" id="catMain">
+            <button
+              class="btn btn--dim btn--sm"
+              id="catBack"
+              style="display: none; margin-bottom: 12px"
+            >
+              ← Все категории
+            </button>
+            <div class="sec-head" style="margin-top: 0">
+              <h2 class="sec-title">Каталог <em>разрешённого</em></h2>
+              <span class="sec-note" id="catCount"></span>
+            </div>
+            <div class="toolbar">
+              <span id="catQuery"></span>
+              <select class="select" id="sortSel" aria-label="Сортировка">
+                <option value="def">По умолчанию</option>
+                <option value="cheap">Сначала дешевле</option>
+                <option value="rich">Сначала дороже</option>
+                <option value="disc">По размеру скидки</option>
+                <option value="abc">По алфавиту</option>
+                <option value="rate">По рейтингу</option>
+              </select>
+            </div>
+            <div class="pgrid" id="catGrid"></div>
+          </div>
+        </div>
+      </section>
+      <section class="panel" id="tab-favs">
+        <div class="sec-head" style="margin-top: 6px">
+          <h2 class="sec-title">Ваше <em>избранное</em></h2>
+          <button
+            class="btn btn--dim btn--sm"
+            id="favAddAll"
+            style="display: none"
+          >
+            Всё в корзину
+          </button>
+        </div>
+        <div id="favsBox"></div>
+      </section>
+      <section class="panel" id="tab-product">
+        <div id="productBox"></div>
+      </section>
+      <section class="panel" id="tab-cart">
+        <div class="sec-head" style="margin-top: 6px">
+          <h2 class="sec-title">Корзина <em>покупателя</em></h2>
+          <span class="sec-note" id="cartNote"></span>
+        </div>
+        <div id="cartView">
+          <div class="cart-grid">
+            <div id="cartLines"></div>
+            <div class="summary">
+              <h3>Итог</h3>
+              <div class="sum-row">
+                <span>Товары</span><span id="sumSub">—</span>
+              </div>
+              <label class="sum-label" for="shipCountry">Страна доставки</label>
+              <select
+                class="select"
+                id="shipCountry"
+                style="width: 100%"
+              ></select>
+              <label class="sum-label">Способ доставки</label>
+              <div class="radios">
+                <input
+                  type="radio"
+                  name="dm"
+                  id="dmStd"
+                  value="std"
+                  checked
+                /><label for="dmStd">Стандарт</label
+                ><input type="radio" name="dm" id="dmExp" value="exp" /><label
+                  for="dmExp"
+                  >Экспресс ×1.9</label
+                >
+              </div>
+              <div class="sum-row" style="margin-top: 12px">
+                <span>Доставка</span><span id="sumShip">—</span>
+              </div>
+              <div class="sum-total">
+                <span>Итого</span><span id="sumTotal">0 ₽</span>
+              </div>
+              <button
+                class="btn btn--w"
+                id="toCheckout"
+                style="margin-top: 18px"
+              >
+                Оформить заказ →
+              </button>
+            </div>
+          </div>
+        </div>
+        <div id="checkoutView" hidden>
+          <div class="cart-grid">
+            <form class="ck-form" id="ckForm" novalidate>
+              <label for="fName">Имя получателя *</label
+              ><input id="fName" placeholder="Иван Печаткин" />
+              <label for="fEmail">Email *</label
+              ><input id="fEmail" type="email" placeholder="ivan@example.com" />
+              <div class="row2">
+                <div>
+                  <label for="fCountry">Страна *</label
+                  ><select
+                    id="fCountry"
+                    class="select"
+                    style="width: 100%"
+                  ></select>
+                </div>
+                <div>
+                  <label for="fCity">Город *</label
+                  ><input id="fCity" placeholder="Белград" />
+                </div>
+              </div>
+              <label for="fAddr">Адрес *</label
+              ><input id="fAddr" placeholder="ул. Легальная, д. 1" />
+              <label>Оплата</label>
+              <div class="radios">
+                <input
+                  type="radio"
+                  name="pay"
+                  id="pCard"
+                  value="Карта"
+                  checked
+                /><label for="pCard">Карта</label
+                ><input type="radio" name="pay" id="pSbp" value="СБП" /><label
+                  for="pSbp"
+                  >СБП</label
+                ><input type="radio" name="pay" id="pCr" value="Крипта" /><label
+                  for="pCr"
+                  >Криптовалюта</label
+                >
+              </div>
+              <div
+                style="
+                  display: flex;
+                  gap: 12px;
+                  margin-top: 24px;
+                  flex-wrap: wrap;
+                "
+              >
+                <button type="button" class="btn btn--dim" id="backToCart">
+                  ← Назад</button
+                ><button type="submit" class="btn" style="flex: 1">
+                  Подтвердить заказ
+                </button>
+              </div>
+            </form>
+            <div class="summary" style="position: static">
+              <h3>Сводка</h3>
+              <div id="ckLines"></div>
+              <div class="sum-row">
+                <span>Доставка</span><span id="ckShip">—</span>
+              </div>
+              <div class="sum-total">
+                <span>Итого</span><span id="ckTotal">0 ₽</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div id="doneView" hidden>
+          <div class="cert">
+            <span class="stamp stamp--green">Заказ принят</span>
+            <h2>Сертификат легальности</h2>
+            <p class="num" id="certNum">№ LM-0000</p>
+            <div class="cert-lines" id="certLines"></div>
+            <p
+              class="mono"
+              style="
+                font-size: 12px;
+                color: var(--green);
+                letter-spacing: 0.08em;
+                margin-bottom: 22px;
+              "
+              id="certPts"
+            ></p>
+            <div
+              style="
+                display: flex;
+                gap: 12px;
+                justify-content: center;
+                flex-wrap: wrap;
+              "
+            >
+              <button class="btn" data-tab="profile">В профиль</button
+              ><button class="btn btn--ghost" data-tab="home">
+                На главную
+              </button>
+            </div>
+            <small
+              >Документ в двух экземплярах: один вам, второй в архив.<br />Претензий:
+              0.</small
+            >
+          </div>
+        </div>
+      </section>
+      <section class="panel" id="tab-profile">
+        <div class="sec-head" style="margin-top: 6px">
+          <h2 class="sec-title">Профиль <em>покупателя</em></h2>
+          <span class="sec-note">карта легального покупателя</span>
+        </div>
+        <div id="pfGuest" hidden>
+          <div class="empty">
+            <span class="stamp stamp--green">Нужен вход</span>
+            <p>
+              Войдите или создайте аккаунт, появятся карта покупателя, очки и
+              история заказов.<br />Оформление заказов доступно только
+              авторизованным покупателям.
+            </p>
+            <div
+              style="
+                display: flex;
+                gap: 12px;
+                justify-content: center;
+                flex-wrap: wrap;
+              "
+            >
+              <button class="btn" data-ao="login">Войти</button
+              ><button class="btn btn--ghost" data-ao="reg">
+                Создать аккаунт
+              </button>
+            </div>
+          </div>
+        </div>
+        <div id="pfAuthed">
+          <div class="pf-top">
+            <div class="mcard">
+              <div class="mcard-top">
+                <span class="mcard-brand">ЛЕГАЛЬНО.МАРКЕТ</span
+                ><span class="stamp">Легален</span>
+              </div>
+              <div class="mcard-name" id="cardName">Гость</div>
+              <div class="mcard-num" id="cardNum">№ LM-24-000000</div>
+              <div class="mcard-pts">
+                ОЧКИ ЛЕГАЛЬНОСТИ: <b id="cardPts">0</b>
+              </div>
+            </div>
+            <div class="pstats" id="pstats"></div>
+          </div>
+          <div class="pf-layout">
+            <nav class="pm-menu" id="pmMenu" aria-label="Меню профиля"></nav>
+            <div class="pm-content" id="pmContent"></div>
+          </div>
+        </div>
+      </section>
+      <section class="panel" id="tab-delivery">
+        <div class="crumbs">
+          <button data-tab="home">Главная</button><span class="sep">/</span
+          ><span class="cur">Доставка</span>
+        </div>
+        <div class="sec-head">
+          <h2 class="sec-title">Доставка <em>и таможня</em></h2>
+          <span class="sec-note">63 страны • везде легально</span>
+        </div>
+        <div class="info-cards">
+          <div class="info-card">
+            <h3>
+              <svg
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path
+                  d="M2 6h12v10H2zM14 9h4l3 3v4h-7M6.5 19a1.8 1.8 0 1 0 0-3.6 1.8 1.8 0 0 0 0 3.6zM17.5 19a1.8 1.8 0 1 0 0-3.6 1.8 1.8 0 0 0 0 3.6z"
+                /></svg
+              >Как проходит таможня
+            </h3>
+            <p>
+              К каждой международной посылке прикладываем сертификат легальности
+              и полный пакет документов. Вопросы таможни наш юрист закрывает
+              сам.
+            </p>
+          </div>
+          <div class="info-card">
+            <h3>
+              <svg
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path d="M4 12.5l5 5L20 6.5" /></svg
+              >По России, бесплатно
+            </h3>
+            <p>
+              Заказы от 5 000 ₽ по РФ доставляем за свой счёт. СДЭК, Почта или
+              курьер, на выбор при оформлении.
+            </p>
+          </div>
+          <div class="info-card">
+            <h3>
+              <svg
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <circle cx="12" cy="12" r="10" />
+                <path d="M12 7v5l3.5 2" /></svg
+              >Трекинг каждой посылки
+            </h3>
+            <p>
+              Номер отслеживания приходит на email сразу после передачи в службу
+              доставки. Даже кирпич едет по треку.
+            </p>
+          </div>
+        </div>
+        <div class="table-wrap">
+          <table class="dtable">
+            <thead>
+              <tr>
+                <th>Страна</th>
+                <th>Срок</th>
+                <th>Стоимость</th>
+                <th>Примечание</th>
+              </tr>
+            </thead>
+            <tbody id="dTbody"></tbody>
+          </table>
+        </div>
+      </section>
+      <section class="panel" id="tab-faq">
+        <div class="crumbs">
+          <button data-tab="home">Главная</button><span class="sep">/</span
+          ><span class="cur">Вопросы</span>
+        </div>
+        <div class="sec-head">
+          <h2 class="sec-title">Вопросы <em>и ответы</em></h2>
+        </div>
+        <div id="faqList">
+          <details class="faq-item">
+            <summary>
+              Вы правда продаёте всё?<span class="plus">+</span>
+            </summary>
+            <p>
+              Почти. Всё, что существует физически и разрешено к обороту. Если
+              товара нет в каталоге, напишите нам, найдём легальную версию.
+            </p>
+          </details>
+          <details class="faq-item">
+            <summary>А оружие продаёте?<span class="plus">+</span></summary>
+            <p>
+              Нет. Это нелегально без лицензии, а лицензии мы не выдаём. Зато
+              продаём очень убедительные водяные пистолеты.
+            </p>
+          </details>
+          <details class="faq-item">
+            <summary>
+              Как оплатить из другой страны?<span class="plus">+</span>
+            </summary>
+            <p>
+              Принимаем международные карты, СБП для России и СНГ, криптовалюту.
+              Валюта на сайте переключается в настройках профиля: ₽, $, €.
+            </p>
+          </details>
+          <details class="faq-item">
+            <summary>
+              Что если таможня задаст вопросы?<span class="plus">+</span>
+            </summary>
+            <p>
+              К каждой посылке прикладывается сертификат легальности и пакет
+              документов. Если вопросы всё же возникнут, наш юрист ответит на
+              них за вас. Бесплатно.
+            </p>
+          </details>
+          <details class="faq-item">
+            <summary>
+              Есть ли скидки юристам?<span class="plus">+</span>
+            </summary>
+            <p>
+              Да, 10% при предъявлении печати. Судьям, 15%, но только вне
+              рабочее время.
+            </p>
+          </details>
+        </div>
+      </section>
+    </main>
+    <footer>
+      <div class="wrap foot-grid">
+        <div>
+          <div class="foot-brand">ЛЕГАЛЬНО<span>.МАРКЕТ</span></div>
+          <p class="foot-desc">
+            Продаём всё, что можно. Ничего, что нельзя. Это вся наша стратегия.
+          </p>
+          <span class="stamp" style="color: #9ed3ae; font-size: 10px"
+            >Проверено ×2</span
+          >
+        </div>
+        <div>
+          <h4>Покупателям</h4>
+          <a href="#" data-tab="catalog">Каталог</a
+          ><a href="#" data-tab="favs">Избранное</a
+          ><a href="#" data-tab="cart">Корзина</a
+          ><a href="#" data-tab="profile">Профиль</a>
+        </div>
+        <div>
+          <h4>Информация</h4>
+          <a href="#" data-tab="delivery">Доставка и таможня</a
+          ><a href="#" data-tab="faq">Вопросы и ответы</a>
+        </div>
+        <div>
+          <h4>Контакты</h4>
+          <a href="mailto:help@legalno.market">help@legalno.market</a
+          ><a href="tel:+78005553535">8 800 555-ЛЕГАЛЬНО</a
+          ><a>Москва • Белград • Алматы</a><a>Пн-Вс, всегда в рамках закона</a>
+        </div>
+      </div>
+      <div class="foot-bottom">
+        © 2025 ЛЕГАЛЬНО.МАРКЕТ • НЕ ЯВЛЯЕТСЯ ПУБЛИЧНОЙ ОФЕРТОЙ • ВСЕ ТОВАРЫ
+        ПРОВЕРЕНЫ ЮРИСТАМИ ДВАЖДЫ
+      </div>
+    </footer>
+    <nav class="bottomnav" aria-label="Мобильная навигация">
+      <button data-tab="home" class="active">
+        <svg
+          width="19"
+          height="19"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+        >
+          <path d="M3 10.5 12 3l9 7.5V21h-6v-6h-6v6H3z" /></svg
+        >Главная
+      </button>
+      <button data-tab="catalog">
+        <svg
+          width="19"
+          height="19"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+        >
+          <rect x="3" y="3" width="7" height="7" />
+          <rect x="14" y="3" width="7" height="7" />
+          <rect x="3" y="14" width="7" height="7" />
+          <rect x="14" y="14" width="7" height="7" /></svg
+        >Каталог
+      </button>
+      <button data-tab="favs">
+        <svg
+          width="19"
+          height="19"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+        >
+          <path
+            d="M12 21s-7.5-4.7-9.4-9.3C1.2 8 3.2 4.5 6.6 4.5c2 0 3.8 1.2 5.4 3 1.6-1.8 3.4-3 5.4-3 3.4 0 5.4 3.5 4 7.2C19.5 16.3 12 21 12 21z"
+          /></svg
+        >Избранное<span class="bbadge zero" id="mBadgeFav">0</span>
+      </button>
+      <button data-tab="cart">
+        <svg
+          width="19"
+          height="19"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+        >
+          <circle cx="9" cy="20" r="1.5" />
+          <circle cx="17" cy="20" r="1.5" />
+          <path d="M3 3h3l2.5 12.5h10L21 7H7" /></svg
+        >Корзина<span class="bbadge zero" id="mBadgeCart">0</span>
+      </button>
+      <button data-tab="profile">
+        <svg
+          width="19"
+          height="19"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+        >
+          <circle cx="12" cy="8" r="4" />
+          <path d="M4 21c1.5-4 5-5.5 8-5.5s6.5 1.5 8 5.5" /></svg
+        >Профиль
+      </button>
+    </nav>
+    <div class="subpage" id="subpage" hidden>
+      <div class="sp-head">
+        <button class="sp-back" id="spBack" aria-label="Назад">
+          <svg
+            width="20"
+            height="20"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <path d="M15 5l-7 7 7 7" />
+          </svg>
+        </button>
+        <b class="sp-title" id="spTitle"></b>
+      </div>
+      <div class="sp-body" id="spBody"></div>
+    </div>
+    <div class="auth-overlay" id="authOverlay" hidden>
+      <div class="auth-box">
+        <div class="auth-head">
+          <b id="authTitle">Вход в аккаунт</b
+          ><button class="auth-close" id="authClose" aria-label="Закрыть">
+            ×
+          </button>
+        </div>
+        <div class="auth-tabs">
+          <button id="atLogin" class="active" type="button">Вход</button
+          ><button id="atReg" type="button">Регистрация</button>
+        </div>
+        <form class="ck-form" id="loginForm" novalidate>
+          <label for="liEmail">Email</label
+          ><input
+            id="liEmail"
+            type="email"
+            placeholder="ivan@example.com"
+            autocomplete="email"
+          />
+          <label for="liPass">Пароль</label
+          ><input
+            id="liPass"
+            type="password"
+            placeholder="••••••••"
+            autocomplete="current-password"
+          />
+          <button class="btn btn--w" type="submit" style="margin-top: 20px">
+            Войти
+          </button>
+        </form>
+        <form class="ck-form" id="regForm" hidden novalidate>
+          <label for="rgName">Имя</label
+          ><input id="rgName" placeholder="Иван Печаткин" autocomplete="name" />
+          <label for="rgEmail">Email</label
+          ><input
+            id="rgEmail"
+            type="email"
+            placeholder="ivan@example.com"
+            autocomplete="email"
+          />
+          <label for="rgPass">Пароль (минимум 6 символов)</label
+          ><input
+            id="rgPass"
+            type="password"
+            placeholder="••••••••"
+            autocomplete="new-password"
+          />
+          <button class="btn btn--w" type="submit" style="margin-top: 20px">
+            Создать аккаунт
+          </button>
+        </form>
+        <p class="auth-msg" id="authMsg"></p>
+        <p class="auth-note">
+          Прототип: аккаунты хранятся локально в браузере.<br />В продакшене
+          авторизация пойдёт через backend (API + хеширование паролей).
+        </p>
+      </div>
+    </div>
+    <div class="toast" id="toast"></div>
+    <script>
+      const RM = matchMedia("(prefers-reduced-motion: reduce)").matches;
+      const ICONS = {
+        home: '<path d="M3 10.5 12 3l9 7.5V21h-6v-6h-6v6H3z"/>',
+        tech: '<path d="M13 2 4.5 13.5H11L9.5 22 19 10.5h-6.5L13 2z"/>',
+        food: '<path d="M5 3v7a3 3 0 0 0 6 0V3M8 10v11M19 3c-2.2 2.4-3 5.6-3 9h3v9"/>',
+        transport:
+          '<circle cx="6" cy="17" r="3.2"/><circle cx="18" cy="17" r="3.2"/><path d="M6 17l3-8h6l3 8M9 9 8 6h3"/>',
+        hobby:
+          '<circle cx="6.5" cy="17.5" r="2.5"/><circle cx="17.5" cy="15.5" r="2.5"/><path d="M9 17.5V5.5l11-2v12"/>',
+        plant:
+          '<path d="M12 21v-8M12 13c0-4-3-6-6-6 0 4 3 6 6 6zM12 13c0-4 3-6 6-6 0 4-3 6-6 6z"/>',
+        box: '<path d="M21 8l-9-5-9 5 9 5 9-5zM3 8v8l9 5 9-5V8M12 13v8"/>',
+        bag: '<path d="M6 7h12l1.2 14H4.8L6 7zM9 7a3 3 0 0 1 6 0"/>',
+        star: '<path d="M12 3l2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1L3.2 9.5l6.1-.9L12 3z"/>',
+        right: '<path d="M9 5l7 7-7 7"/>',
+        left: '<path d="M15 5l-7 7 7 7"/>',
+        share:
+          '<circle cx="6" cy="12" r="2.5"/><circle cx="17" cy="6" r="2.5"/><circle cx="17" cy="18" r="2.5"/><path d="M8.2 10.8l6.6-3.6M8.2 13.2l6.6 3.6"/>',
+        shield:
+          '<path d="M12 2l8 4v6c0 5-3.5 8.5-8 10-4.5-1.5-8-5-8-10V6l8-4z"/><path d="M9 12l2 2 4-4"/>',
+        chat: '<path d="M21 11.5a8.5 8.5 0 0 1-12.4 7.5L3 21l2-5.6A8.5 8.5 0 1 1 21 11.5z"/>',
+        bell: '<path d="M18 9a6 6 0 1 0-12 0c0 6-2 7-2 7h16s-2-1-2-7"/><path d="M10.5 20a2 2 0 0 0 3 0"/>',
+        gear: '<circle cx="12" cy="12" r="3"/><path d="M19 12a7 7 0 0 0-.1-1.2l2-1.6-2-3.4-2.4 1a7 7 0 0 0-2-1.2L14 3h-4l-.5 2.6a7 7 0 0 0-2 1.2l-2.4-1-2 3.4 2 1.6A7 7 0 0 0 5 12a7 7 0 0 0 .1 1.2l-2 1.6 2 3.4 2.4-1a7 7 0 0 0 2 1.2L10 21h4l.5-2.6a7 7 0 0 0 2-1.2l2.4 1 2-3.4-2-1.6A7 7 0 0 0 19 12z"/>',
+        globe:
+          '<circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15 15 0 0 1 0 20 15 15 0 0 1 0-20z"/>',
+        phone:
+          '<path d="M5 4h4l1.5 4.5L8 10a12 12 0 0 0 6 6l1.5-2.5L20 15v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2z"/>',
+        mail: '<rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/>',
+        exit: '<path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9"/>',
+        tag: '<path d="M20.6 13.4 13.4 20.6a2 2 0 0 1-2.8 0L3 13V3h10l7.6 7.6a2 2 0 0 1 0 2.8z"/><circle cx="7.5" cy="7.5" r="1.5"/>',
+        help: '<circle cx="12" cy="12" r="10"/><path d="M9.5 9a2.5 2.5 0 0 1 5 0c0 1.5-2.5 2-2.5 3.5"/><path d="M12 17h.01"/>',
+      };
+      function icon(n, s = 24) {
+        const fill = n === "star";
+        return `<svg width="${s}" height="${s}" viewBox="0 0 24 24" fill="${fill ? "currentColor" : "none"}" stroke="currentColor" stroke-width="${fill ? 0 : 2}" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${ICONS[n]}</svg>`;
+      }
+      const STAR = icon("star", 13);
+      const CAT_ICON = {
+        Дом: "home",
+        Техника: "tech",
+        Еда: "food",
+        Транспорт: "transport",
+        Хобби: "hobby",
+        Живность: "plant",
+        Странное: "box",
+      };
+      const SUBCATS = {
+        Дом: ["Лопаты и садовый инвентарь", "Текстиль и одежда", "Декор и уют"],
+        Техника: ["Кофемашины", "Печатные машинки", "Аксессуары"],
+        Еда: ["Сыры", "Фермерское", "Напитки"],
+        Транспорт: ["Водный транспорт", "Велосипеды", "Палатки и туризм"],
+        Хобби: [
+          "Музыкальные инструменты",
+          "Настольные игры",
+          "Глобусы и карты",
+        ],
+        Живность: ["Растения", "Аквариумы", "Аксессуары"],
+        Странное: ["Кирпичи", "Воздух в банках", "Коллекционное"],
+      };
+      const PM_ITEMS = [
+        { key: "orders", label: "Мои заказы", icon: "box" },
+        { key: "reviews", label: "Мои отзывы", icon: "star" },
+        { key: "seller", label: "Стать продавцом", icon: "tag" },
+        { key: "chats", label: "Мои чаты", icon: "chat" },
+        { key: "notif", label: "Уведомления", icon: "bell" },
+        { key: "settings", label: "Настройки", icon: "gear" },
+        { key: "lang", label: "Язык приложения", icon: "globe" },
+        { key: "help", label: "Справка", icon: "help" },
+        { key: "social", label: "Мы в соцсетях", icon: "share" },
+        { key: "contact", label: "Связаться с нами", icon: "phone" },
+      ];
+      const PRODUCTS = [
+        {
+          id: 1,
+          slug: "lopata",
+          name: "Лопата садовая «Законная»",
+          cat: "Дом",
+          price: 1490,
+          old: 1990,
+          rating: 4.8,
+          rv: 214,
+          sku: "LM-0042",
+          origin: "Россия",
+          seed: "shop-shovel",
+          desc: "Копает строго по ст. 209 ГК РФ. Черенок, берёза.",
+          stock: 42,
+          isNew: 1,
+        },
+        {
+          id: 2,
+          slug: "noski",
+          name: "Носки с текстом Конституции",
+          cat: "Дом",
+          price: 590,
+          old: 790,
+          rating: 4.6,
+          rv: 98,
+          sku: "LM-0108",
+          origin: "Россия",
+          seed: "shop-socks",
+          desc: "Основные права, прямо на щиколотках. Хлопок 80%.",
+          stock: 300,
+        },
+        {
+          id: 3,
+          slug: "kofemashina",
+          name: "Кофемашина «Утро без нарушений»",
+          cat: "Техника",
+          price: 24900,
+          old: 29900,
+          rating: 4.9,
+          rv: 342,
+          sku: "LM-0233",
+          origin: "Италия",
+          seed: "shop-espresso",
+          desc: "Эспрессо по ГОСТу. Капучинатор заверен нотариально.",
+          stock: 12,
+        },
+        {
+          id: 4,
+          slug: "pechatnaya-mashinka",
+          name: "Печатная машинка (восст.)",
+          cat: "Техника",
+          price: 12700,
+          old: null,
+          rating: 4.7,
+          rv: 56,
+          sku: "LM-0301",
+          origin: "Германия",
+          seed: "shop-typewriter",
+          desc: "Отстукивает заявления и манифесты. Лента в комплекте.",
+          stock: 5,
+        },
+        {
+          id: 5,
+          slug: "syr-gauda",
+          name: "Сыр гауда, голова 3 кг",
+          cat: "Еда",
+          price: 3900,
+          old: 4500,
+          rating: 5.0,
+          rv: 187,
+          sku: "LM-0456",
+          origin: "Нидерланды",
+          seed: "shop-gouda",
+          desc: "Выдержка 8 месяцев. Сертификат молочной легальности.",
+          stock: 27,
+          isNew: 1,
+        },
+        {
+          id: 6,
+          slug: "kayak",
+          name: "Каяк одноместный",
+          cat: "Транспорт",
+          price: 38500,
+          old: 45000,
+          rating: 4.8,
+          rv: 41,
+          sku: "LM-0512",
+          origin: "Вьетнам",
+          seed: "shop-kayak",
+          desc: "Передвижение по воде, легально. Весло прилагается.",
+          stock: 8,
+        },
+        {
+          id: 7,
+          slug: "palatka",
+          name: "Палатка 4-местная «Кочевник»",
+          cat: "Транспорт",
+          price: 11900,
+          old: 14900,
+          rating: 4.7,
+          rv: 129,
+          sku: "LM-0587",
+          origin: "Турция",
+          seed: "shop-tent",
+          desc: "Временное жильё без единого разрешения на строительство.",
+          stock: 33,
+        },
+        {
+          id: 8,
+          slug: "velosiped",
+          name: "Велосипед городской",
+          cat: "Транспорт",
+          price: 21900,
+          old: 25900,
+          rating: 4.8,
+          rv: 203,
+          sku: "LM-0623",
+          origin: "Сербия",
+          seed: "shop-bicycle",
+          desc: "7 скоростей, все разрешённые. Звонок одобрен.",
+          stock: 19,
+          isNew: 1,
+        },
+        {
+          id: 9,
+          slug: "ukulele",
+          name: "Укулеле сопрано",
+          cat: "Хобби",
+          price: 4990,
+          old: 6490,
+          rating: 4.9,
+          rv: 156,
+          sku: "LM-0704",
+          origin: "Китай",
+          seed: "shop-ukulele",
+          desc: "Играет легально, даже если мимо. Чехол в комплекте.",
+          stock: 64,
+          isNew: 1,
+        },
+        {
+          id: 10,
+          slug: "shahmaty",
+          name: "Шахматы деревянные",
+          cat: "Хобби",
+          price: 2450,
+          old: null,
+          rating: 4.9,
+          rv: 88,
+          sku: "LM-0761",
+          origin: "Россия",
+          seed: "shop-chess",
+          desc: "Интеллектуальный спорт без ограничений по составу.",
+          stock: 51,
+        },
+        {
+          id: 11,
+          slug: "globus",
+          name: "Глобус политический",
+          cat: "Хобби",
+          price: 3200,
+          old: 3900,
+          rating: 4.6,
+          rv: 74,
+          sku: "LM-0809",
+          origin: "Италия",
+          seed: "shop-globe",
+          desc: "Все 63 страны доставки уже нарисованы.",
+          stock: 22,
+        },
+        {
+          id: 12,
+          slug: "kaktus",
+          name: "Кактус «Неприкосновенный»",
+          cat: "Живность",
+          price: 790,
+          old: 990,
+          rating: 4.8,
+          rv: 260,
+          sku: "LM-0902",
+          origin: "Мексика",
+          seed: "shop-cactus",
+          desc: "Живой, колючий, полностью в правовом поле.",
+          stock: 120,
+        },
+        {
+          id: 13,
+          slug: "akvarium",
+          name: "Аквариум с улитками",
+          cat: "Живность",
+          price: 5600,
+          old: 6800,
+          rating: 4.7,
+          rv: 33,
+          sku: "LM-0948",
+          origin: "Россия",
+          seed: "shop-aquarium",
+          desc: "3 улитки, все с документами. Корм на первый месяц.",
+          stock: 9,
+        },
+        {
+          id: 14,
+          slug: "kirpich",
+          name: "Кирпич керамический, 1 шт.",
+          cat: "Странное",
+          price: 89,
+          old: 120,
+          rating: 5.0,
+          rv: 1024,
+          sku: "LM-1001",
+          origin: "Россия",
+          seed: "shop-brick",
+          desc: "Один. Легальный. Марка М-150. Хит месяца.",
+          stock: 9999,
+          isNew: 1,
+        },
+        {
+          id: 15,
+          slug: "vozduh-alp",
+          name: "Воздух Альп в банке",
+          cat: "Странное",
+          price: 990,
+          old: 1290,
+          rating: 4.5,
+          rv: 67,
+          sku: "LM-1066",
+          origin: "Швейцария",
+          seed: "shop-alps-jar",
+          desc: "500 мл горного воздуха. Открыть в момент тоски.",
+          stock: 77,
+        },
+      ];
+      const COUNTRIES = {
+        RU: {
+          code: "RU",
+          name: "Россия",
+          days: "1-3",
+          ship: 390,
+          note: "По РФ бесплатно от 5 000 ₽",
+        },
+        BY: {
+          code: "BY",
+          name: "Беларусь",
+          days: "3-6",
+          ship: 700,
+          note: "Без таможенного оформления",
+        },
+        KZ: {
+          code: "KZ",
+          name: "Казахстан",
+          days: "4-8",
+          ship: 900,
+          note: "ЕАЭС, без пошлин",
+        },
+        RS: {
+          code: "RS",
+          name: "Сербия",
+          days: "7-14",
+          ship: 1900,
+          note: "Документы оформляем сами",
+        },
+        TR: {
+          code: "TR",
+          name: "Турция",
+          days: "6-12",
+          ship: 2200,
+          note: "До 30 € без декларации",
+        },
+        AE: {
+          code: "AE",
+          name: "ОАЭ",
+          days: "7-12",
+          ship: 2600,
+          note: "Таможня включена",
+        },
+        DE: {
+          code: "DE",
+          name: "Германия",
+          days: "8-15",
+          ship: 2900,
+          note: "Оформление импорта в ЕС, на нас",
+        },
+        VN: {
+          code: "VN",
+          name: "Вьетнам",
+          days: "10-18",
+          ship: 3100,
+          note: "Проверено, всё доезжает целым",
+        },
+        BR: {
+          code: "BR",
+          name: "Бразилия",
+          days: "15-30",
+          ship: 4500,
+          note: "Долго, но легально",
+        },
+        IS: {
+          code: "IS",
+          name: "Исландия",
+          days: "9-16",
+          ship: 3400,
+          note: "Да, до Рейкьявика тоже можно",
+        },
+      };
+      const RATES = { RUB: 1, USD: 0.011, EUR: 0.01 };
+      const SIGNS = { RUB: "₽", USD: "$", EUR: "€" };
+      const $ = (s) => document.querySelector(s);
+      const store = {
+        get(k, d) {
+          try {
+            const v = localStorage.getItem(k);
+            return v ? JSON.parse(v) : d;
+          } catch (e) {
+            return d;
+          }
+        },
+        set(k, v) {
+          try {
+            localStorage.setItem(k, JSON.stringify(v));
+          } catch (e) {}
+        },
+      };
+      const state = {
+        tab: "home",
+        currency: store.get("lm5_cur", "RUB"),
+        cart: store.get("lm5_cart", {}),
+        favs: store.get("lm5_favs", []),
+        profile: store.get("lm5_profile", {
+          name: "",
+          email: "",
+          country: "RU",
+          cardNo:
+            "LM-24-" +
+            String(Math.floor(Math.random() * 900000)).padStart(6, "0"),
+          pts: 0,
+        }),
+        orders: store.get("lm5_orders", []),
+        user: store.get("lm5_user", null),
+        reviews: store.get("lm5_reviews", []),
+        notifs: store.get("lm5_notifs", [
+          {
+            id: 1,
+            text: "Добро пожаловать в ЛЕГАЛЬНО.МАРКЕТ! Всё легально, всё для вас.",
+            date: new Date().toLocaleDateString("ru-RU"),
+            read: false,
+          },
+        ]),
+        chats: store.get("lm5_chats", []),
+        lang: store.get("lm5_lang", "ru"),
+        search: "",
+        cat: "Все",
+        sort: "def",
+        currentProduct: null,
+        prodQty: 1,
+        pmKey: "orders",
+        panelCat: null,
+        backTo: null,
+        scrollRestore: null,
+      };
+      let pendingCheckout = false;
+      const save = () => {
+        store.set("lm5_cart", state.cart);
+        store.set("lm5_favs", state.favs);
+        store.set("lm5_profile", state.profile);
+        store.set("lm5_orders", state.orders);
+        store.set("lm5_cur", state.currency);
+        store.set("lm5_reviews", state.reviews);
+        store.set("lm5_notifs", state.notifs);
+        store.set("lm5_chats", state.chats);
+        store.set("lm5_lang", state.lang);
+      };
+      const fmt = (n) =>
+        Math.round(n * RATES[state.currency]).toLocaleString("ru-RU") +
+        " " +
+        SIGNS[state.currency];
+      const discOf = (p) =>
+        p.old ? Math.round((1 - p.price / p.old) * 100) : 0;
+      const cartList = () =>
+        Object.entries(state.cart)
+          .map(([id, q]) => ({ p: PRODUCTS.find((x) => x.id == id), q }))
+          .filter((i) => i.p);
+      const subtotal = () =>
+        cartList().reduce((s, i) => s + i.p.price * i.q, 0);
+      const getUsers = () => store.get("lm5_users", []);
+      const saveUsers = (u) => store.set("lm5_users", u);
+      const isMobile = () => window.innerWidth <= 900;
+      /* ---------- TOAST ---------- */
+      let toastT;
+      function showToast(msg) {
+        const t = $("#toast");
+        t.textContent = msg;
+        t.classList.add("show");
+        clearTimeout(toastT);
+        toastT = setTimeout(hideToast, 2200);
+      }
+      function hideToast() {
+        const t = $("#toast");
+        if (!t.classList.contains("show")) return;
+        t.classList.remove("show");
+        setTimeout(() => {
+          if (!t.classList.contains("show")) t.textContent = "";
+        }, 350);
+      }
+      ["scroll", "touchstart", "pointerdown"].forEach((ev) =>
+        window.addEventListener(ev, hideToast, { passive: true }),
+      );
+      /* ---------- СТРАНИЦА-ЭКРАН (моб.) ---------- */
+      function subDeliveryHTML() {
+        return (
+          `<div class="info-cards">
+<div class="info-card"><h3>${icon("box", 20)}Как проходит таможня</h3><p>К каждой международной посылке прикладываем сертификат легальности и полный пакет документов. Вопросы таможни наш юрист закрывает сам.</p></div>
+<div class="info-card"><h3>${icon("right", 20)}По России, бесплатно</h3><p>Заказы от 5 000 ₽ по РФ доставляем за свой счёт. СДЭК, Почта или курьер, на выбор при оформлении.</p></div>
+<div class="info-card"><h3>${icon("globe", 20)}Трекинг каждой посылки</h3><p>Номер отслеживания приходит на email сразу после передачи в службу доставки. Даже кирпич едет по треку.</p></div>
+</div>
+<div class="table-wrap"><table class="dtable"><thead><tr><th>Страна</th><th>Срок</th><th>Стоимость</th><th>Примечание</th></tr></thead><tbody>` +
+          Object.values(COUNTRIES)
+            .map(
+              (c) =>
+                `<tr><td><span class="cn-code">${c.code}</span> <b>${c.name}</b></td><td class="mono">${c.days} дн.</td><td class="mono">${fmt(c.ship)}</td><td>${c.note}</td></tr>`,
+            )
+            .join("") +
+          `</tbody></table></div>`
+        );
+      }
+      function subFaqHTML() {
+        return $("#faqList").innerHTML;
+      }
+      function openSubpage(key) {
+        const titles = {
+          delivery: "Доставка и таможня",
+          faq: "Вопросы и ответы",
+        };
+        $("#spTitle").textContent = titles[key] || "";
+        $("#spBody").innerHTML =
+          key === "delivery" ? subDeliveryHTML() : subFaqHTML();
+        $("#spBody").scrollTop = 0;
+        $("#subpage").hidden = false;
+        requestAnimationFrame(() => $("#subpage").classList.add("open"));
+      }
+      function closeSubpage() {
+        $("#subpage").classList.remove("open");
+        setTimeout(
+          () => {
+            $("#subpage").hidden = true;
+          },
+          RM ? 0 : 300,
+        );
+      }
+      $("#spBack").onclick = closeSubpage;
+      function goInfo(key) {
+        isMobile() ? openSubpage(key) : switchTab(key);
+      }
+      /* ---------- АВТОРИЗАЦИЯ ---------- */
+      function resetAuthForms() {
+        ["liEmail", "liPass", "rgName", "rgEmail", "rgPass"].forEach((id) => {
+          const el = $("#" + id);
+          if (el) el.value = "";
+        });
+        const m = $("#authMsg");
+        m.textContent = "";
+        m.className = "auth-msg";
+      }
+      function openAuth(mode = "login", msg = "") {
+        resetAuthForms();
+        $("#authOverlay").hidden = false;
+        setAuthMode(mode);
+        if (msg) {
+          const m = $("#authMsg");
+          m.textContent = msg;
+          m.className = "auth-msg err";
+        }
+      }
+      function closeAuth() {
+        $("#authOverlay").hidden = true;
+        resetAuthForms();
+        pendingCheckout = false;
+      }
+      function setAuthMode(mode) {
+        const login = mode === "login";
+        $("#atLogin").classList.toggle("active", login);
+        $("#atReg").classList.toggle("active", !login);
+        $("#loginForm").hidden = !login;
+        $("#regForm").hidden = login;
+        $("#authTitle").textContent = login ? "Вход в аккаунт" : "Регистрация";
+        $("#authMsg").textContent = "";
+        $("#authMsg").className = "auth-msg";
+      }
+      $("#atLogin").onclick = () => setAuthMode("login");
+      $("#atReg").onclick = () => setAuthMode("reg");
+      $("#authClose").onclick = closeAuth;
+      $("#authOverlay").addEventListener("click", (e) => {
+        if (e.target === e.currentTarget) closeAuth();
+      });
+      document
+        .querySelectorAll("[data-ao]")
+        .forEach((b) => (b.onclick = () => openAuth(b.dataset.ao)));
+      function applyAuthUI() {
+        $("#profileLbl").textContent = state.user
+          ? (state.profile.name || state.user).split(" ")[0]
+          : "Профиль";
+        const logged = !!state.user;
+        $("#pfGuest").hidden = logged;
+        $("#pfAuthed").hidden = !logged;
+      }
+      function continueCheckoutIfNeeded(flag) {
+        if (flag && cartList().length) {
+          if (state.tab !== "cart") switchTab("cart");
+          startCheckout();
+        }
+      }
+      $("#loginForm").addEventListener("submit", (e) => {
+        e.preventDefault();
+        const email = $("#liEmail").value.trim().toLowerCase(),
+          pass = $("#liPass").value,
+          m = $("#authMsg");
+        if (!/.+@.+\..+/.test(email) || !pass) {
+          m.textContent = "Заполните email и пароль";
+          m.className = "auth-msg err";
+          return;
+        }
+        const u = getUsers().find((x) => x.email === email);
+        if (!u || u.pass !== pass) {
+          m.textContent = "Неверный email или пароль";
+          m.className = "auth-msg err";
+          return;
+        }
+        const goCk = pendingCheckout;
+        state.user = email;
+        state.profile.name = u.name;
+        state.profile.email = u.email;
+        save();
+        store.set("lm5_user", email);
+        closeAuth();
+        applyAuthUI();
+        renderProfile();
+        showToast("✓ Добро пожаловать, " + u.name.split(" ")[0] + "!");
+        continueCheckoutIfNeeded(goCk);
+      });
+      $("#regForm").addEventListener("submit", (e) => {
+        e.preventDefault();
+        const name = $("#rgName").value.trim(),
+          email = $("#rgEmail").value.trim().toLowerCase(),
+          pass = $("#rgPass").value,
+          m = $("#authMsg");
+        if (name.length < 2) {
+          m.textContent = "Введите имя";
+          m.className = "auth-msg err";
+          return;
+        }
+        if (!/.+@.+\..+/.test(email)) {
+          m.textContent = "Введите корректный email";
+          m.className = "auth-msg err";
+          return;
+        }
+        if (pass.length < 6) {
+          m.textContent = "Пароль, минимум 6 символов";
+          m.className = "auth-msg err";
+          return;
+        }
+        const users = getUsers();
+        if (users.find((x) => x.email === email)) {
+          m.textContent = "Этот email уже зарегистрирован";
+          m.className = "auth-msg err";
+          return;
+        }
+        users.push({ name, email, pass });
+        saveUsers(users);
+        const goCk = pendingCheckout;
+        state.user = email;
+        state.profile.name = name;
+        state.profile.email = email;
+        save();
+        store.set("lm5_user", email);
+        closeAuth();
+        applyAuthUI();
+        renderProfile();
+        showToast("✓ Аккаунт создан. Добро пожаловать!");
+        continueCheckoutIfNeeded(goCk);
+      });
+      /* ---------- СТРАНА ДОСТАВКИ ---------- */
+      function renderGeo() {
+        $("#geoName").textContent =
+          COUNTRIES[state.profile.country || "RU"].name;
+        $("#geoDrop").innerHTML = Object.entries(COUNTRIES)
+          .map(
+            ([k, c]) =>
+              `<button class="geo-item ${(state.profile.country || "RU") === k ? "active" : ""}" data-geo="${k}">${c.code} • ${c.name}</button>`,
+          )
+          .join("");
+        $("#geoDrop")
+          .querySelectorAll("[data-geo]")
+          .forEach(
+            (b) =>
+              (b.onclick = () => {
+                state.profile.country = b.dataset.geo;
+                save();
+                $("#geoDrop").hidden = true;
+                renderGeo();
+                showToast(
+                  "✓ Страна доставки: " + COUNTRIES[b.dataset.geo].name,
+                );
+                if (state.tab === "profile") renderProfile();
+                if (state.tab === "cart") renderCart();
+                if (state.tab === "product") renderProduct();
+              }),
+          );
+      }
+      $("#geoRow").onclick = () => {
+        $("#geoDrop").hidden = !$("#geoDrop").hidden;
+      };
+      document.addEventListener("click", (e) => {
+        if (!e.target.closest("#geoRow") && !e.target.closest("#geoDrop"))
+          $("#geoDrop").hidden = true;
+      });
+      /* ---------- ВЫПАДАЮЩИЙ КАТАЛОГ (ПК) ---------- */
+      function renderCpLeft() {
+        const cats = [...new Set(PRODUCTS.map((p) => p.cat))];
+        const count = (c) => PRODUCTS.filter((p) => p.cat === c).length;
+        $("#cpLeft").innerHTML =
+          `<button class="cp-item" data-cp="Все">${icon("bag", 19)}<span>Все товары</span><span class="cnt">${PRODUCTS.length}</span></button>` +
+          cats
+            .map(
+              (c) =>
+                `<button class="cp-item ${state.panelCat === c ? "active" : ""}" data-cp="${c}">${icon(CAT_ICON[c] || "box", 19)}<span>${c}</span><span class="cnt">${count(c)}</span></button>`,
+            )
+            .join("");
+        document.querySelectorAll("#cpLeft [data-cp]").forEach(
+          (b) =>
+            (b.onclick = () => {
+              const c = b.dataset.cp;
+              if (c === "Все") {
+                state.cat = "Все";
+                switchTab("catalog");
+                return;
+              }
+              state.panelCat = c;
+              document
+                .querySelectorAll("#cpLeft .cp-item")
+                .forEach((x) => x.classList.toggle("active", x === b));
+              renderCpRight(c);
+            }),
+        );
+      }
+      function renderCpRight(cat) {
+        const el = $("#cpRight");
+        const subs = SUBCATS[cat] || [];
+        el.innerHTML = `
+<div class="cp-right-head"><h4>${cat}</h4><button class="cp-all" id="cpAll">Смотреть все товары ${icon("right", 16)}</button></div>
+<p>${PRODUCTS.filter((p) => p.cat === cat).length} товаров • все прошли юридическую проверку</p>
+<div class="cp-sub">${subs.map((s) => `<button class="cp-sub-item" data-sub>${s}<span>${icon("right", 15)}</span></button>`).join("")}</div>`;
+        el.classList.remove("swap");
+        void el.offsetWidth;
+        el.classList.add("swap");
+        $("#cpAll").onclick = () => {
+          state.cat = cat;
+          switchTab("catalog");
+        };
+        el.querySelectorAll("[data-sub]").forEach(
+          (b) =>
+            (b.onclick = () => {
+              state.cat = cat;
+              switchTab("catalog");
+            }),
+        );
+      }
+      function openCatPanel() {
+        state.panelCat =
+          state.panelCat || [...new Set(PRODUCTS.map((p) => p.cat))][0];
+        renderCpLeft();
+        renderCpRight(state.panelCat);
+        $("#catPanel").classList.add("open");
+        $("#catBtn").classList.add("open");
+        $("#catBtn").setAttribute("aria-expanded", "true");
+      }
+      function closeCatPanel() {
+        $("#catPanel").classList.remove("open");
+        $("#catBtn").classList.remove("open");
+        $("#catBtn").setAttribute("aria-expanded", "false");
+      }
+      $("#catBtn").onclick = () => {
+        $("#catPanel").classList.contains("open")
+          ? closeCatPanel()
+          : openCatPanel();
+      };
+      document.addEventListener("click", (e) => {
+        if (
+          $("#catPanel").classList.contains("open") &&
+          !e.target.closest("#catPanel") &&
+          !e.target.closest("#catBtn")
+        )
+          closeCatPanel();
+      });
+      /* ---------- ВКЛАДКИ ---------- */
+      const NAV_FOR = {
+        home: "home",
+        catalog: "catalog",
+        product: "catalog",
+        favs: "favs",
+        cart: "cart",
+        profile: "profile",
+        delivery: "",
+        faq: "",
+      };
+      const HIDE_SHOP_BAR = ["favs", "cart", "profile", "product"];
+      function updateHeaderVis() {
+        const bare = HIDE_SHOP_BAR.includes(state.tab);
+        $("#searchForm").style.display = bare ? "none" : "flex";
+        $("#siteHeader").style.display = bare && isMobile() ? "none" : "";
+      }
+      function switchTab(t, restore) {
+        state.tab = t;
+        closeCatPanel();
+        updateHeaderVis();
+        document
+          .querySelectorAll(".panel")
+          .forEach((p) => p.classList.toggle("active", p.id === "tab-" + t));
+        document
+          .querySelectorAll("[data-tab]")
+          .forEach((b) =>
+            b.classList.toggle("active", b.dataset.tab === NAV_FOR[t]),
+          );
+        if (t === "home") renderHome();
+        if (t === "catalog") renderCatalog();
+        if (t === "favs") renderFavs();
+        if (t === "cart") renderCart();
+        if (t === "profile") {
+          applyAuthUI();
+          renderProfile();
+        }
+        if (t === "product") renderProduct();
+        if (t === "delivery") buildDTable();
+        if (restore && state.scrollRestore != null) {
+          const y = state.scrollRestore;
+          state.scrollRestore = null;
+          setTimeout(() => window.scrollTo(0, y), 60);
+        } else {
+          window.scrollTo(0, 0);
+        }
+      }
+      document.querySelectorAll("[data-tab]").forEach((b) => {
+        b.addEventListener("click", (e) => {
+          if (b.tagName === "A") e.preventDefault();
+          const t = b.dataset.tab;
+          if (isMobile() && (t === "delivery" || t === "faq")) {
+            openSubpage(t);
+            return;
+          }
+          if (t === state.tab) {
+            window.scrollTo({ top: 0, behavior: RM ? "auto" : "smooth" });
+            return;
+          }
+          switchTab(t);
+        });
+      });
+      /* ИСПРАВЛЕНО: при ресайзе перерисовываем каталог, чтобы раскладка
+   корректно переключалась между мобильным и десктопным видом */
+      window.addEventListener("resize", () => {
+        updateHeaderVis();
+        if (state.tab === "catalog") renderCatalog();
+      });
+      window.addEventListener(
+        "scroll",
+        () => {
+          $("#siteHeader").classList.toggle("scrolled", window.scrollY > 8);
+        },
+        { passive: true },
+      );
+      document.addEventListener("keydown", (e) => {
+        if (e.key === "Escape") {
+          if (!$("#subpage").hidden) closeSubpage();
+          else if (!$("#authOverlay").hidden) closeAuth();
+          else closeCatPanel();
+        }
+      });
+      /* ---------- СЛАЙДЕР ---------- */
+      const slideCount = 3;
+      let slideIdx = 0;
+      function goSlide(i) {
+        slideIdx = (i + slideCount) % slideCount;
+        $("#slides").style.transform = `translateX(-${slideIdx * 100}%)`;
+        document
+          .querySelectorAll(".dot")
+          .forEach((d, n) => d.classList.toggle("active", n === slideIdx));
+      }
+      function initSlider() {
+        $("#dots").innerHTML = Array.from(
+          { length: slideCount },
+          (_, i) =>
+            `<button class="dot ${i === 0 ? "active" : ""}" data-dot="${i}" aria-label="Слайд ${i + 1}"></button>`,
+        ).join("");
+        document
+          .querySelectorAll(".dot")
+          .forEach((d) => (d.onclick = () => goSlide(+d.dataset.dot)));
+        $("#slidePrev").onclick = () => goSlide(slideIdx - 1);
+        $("#slideNext").onclick = () => goSlide(slideIdx + 1);
+        document.querySelectorAll(".slide [data-go]").forEach(
+          (b) =>
+            (b.onclick = () => {
+              if (b.dataset.sort) {
+                state.sort = b.dataset.sort;
+                $("#sortSel").value = b.dataset.sort;
+              }
+              switchTab(b.dataset.go);
+            }),
+        );
+      }
+      /* ---------- ГЛАВНАЯ ---------- */
+      function renderCatCircles() {
+        $("#catCircles").innerHTML = Object.keys(CAT_ICON)
+          .map(
+            (c) =>
+              `<button class="cat-circle" data-cc="${c}"><span class="cc-ico">${icon(CAT_ICON[c], 26)}</span><span class="cc-lbl">${c}</span></button>`,
+          )
+          .join("");
+        document.querySelectorAll("[data-cc]").forEach(
+          (b) =>
+            (b.onclick = () => {
+              state.cat = b.dataset.cc;
+              switchTab("catalog");
+            }),
+        );
+      }
+      function renderHome() {
+        $("#homeCount").textContent = "ТОВАРОВ: " + PRODUCTS.length;
+        $("#homeGrid").innerHTML = PRODUCTS.map(cardHTML).join("");
+        bindCards($("#homeGrid"));
+        $("#saleRow").innerHTML = PRODUCTS.filter((p) => p.old)
+          .sort((a, b) => discOf(b) - discOf(a))
+          .map(cardHTML)
+          .join("");
+        bindCards($("#saleRow"));
+      }
+      /* ---------- ПОИСК ---------- */
+      $("#searchForm").addEventListener("submit", (e) => {
+        e.preventDefault();
+        state.search = $("#searchInput").value.trim().toLowerCase();
+        switchTab("catalog");
+      });
+      /* ---------- КАТАЛОГ ---------- */
+      function renderCatalog() {
+        const cats = [...new Set(PRODUCTS.map((p) => p.cat))];
+        const count = (c) => PRODUCTS.filter((p) => p.cat === c).length;
+        $("#catList").innerHTML =
+          `<button class="cl-item ${state.cat === "Все" ? "active" : ""}" data-cl="Все">${icon("bag", 20)}<span>Все товары</span><span class="cnt">${PRODUCTS.length}</span><span class="chev">${icon("right", 16)}</span></button>` +
+          cats
+            .map(
+              (c) =>
+                `<button class="cl-item ${state.cat === c ? "active" : ""}" data-cl="${c}">${icon(CAT_ICON[c] || "box", 20)}<span>${c}</span><span class="cnt">${count(c)}</span><span class="chev">${icon("right", 16)}</span></button>`,
+            )
+            .join("");
+        $("#catList")
+          .querySelectorAll("[data-cl]")
+          .forEach(
+            (b) =>
+              (b.onclick = () => {
+                state.cat = b.dataset.cl;
+                renderCatalog();
+              }),
+          );
+        /* ИСПРАВЛЕНО: на десктопе список категорий виден всегда (это левая
+   колонка 290px в .cat-layout). Скрываем его только на мобильных,
+   когда выбрана категория или идёт поиск. Иначе #catMain попадал
+   в узкую колонку 290px и карточки сплющивались. */
+        const mobile = isMobile();
+        const listMode = mobile && state.cat === "Все" && !state.search;
+        $("#catList").style.display = mobile && !listMode ? "none" : "";
+        $("#catMain").style.display = listMode ? "none" : "";
+        $("#catBack").style.display =
+          mobile && !listMode ? "inline-flex" : "none";
+        $("#catQuery").innerHTML = state.search
+          ? `<button class="chip chip--query" id="clearSearch">поиск: «${state.search}» ✕</button>`
+          : "";
+        const cs = $("#clearSearch");
+        if (cs)
+          cs.onclick = () => {
+            state.search = "";
+            $("#searchInput").value = "";
+            renderCatalog();
+          };
+        let list = PRODUCTS.filter((p) => {
+          const text = `${p.name} ${p.cat} ${p.sku} ${p.desc}`.toLowerCase();
+          return (
+            (state.cat === "Все" || p.cat === state.cat) &&
+            text.includes(state.search)
+          );
+        });
+        if (state.sort === "cheap")
+          list = [...list].sort((a, b) => a.price - b.price);
+        if (state.sort === "rich")
+          list = [...list].sort((a, b) => b.price - a.price);
+        if (state.sort === "disc")
+          list = [...list].sort((a, b) => discOf(b) - discOf(a));
+        if (state.sort === "abc")
+          list = [...list].sort((a, b) => a.name.localeCompare(b.name, "ru"));
+        if (state.sort === "rate")
+          list = [...list].sort((a, b) => b.rating - a.rating);
+        $("#catCount").textContent =
+          `НАЙДЕНО: ${list.length} / ${PRODUCTS.length}`;
+        $("#catGrid").innerHTML = list.length
+          ? list.map(cardHTML).join("")
+          : '<div class="empty" style="grid-column:1/-1"><span class="stamp stamp--red">Не найдено</span><p>Попробуйте иначе, закон это разрешает.</p></div>';
+        bindCards($("#catGrid"));
+      }
+      $("#catBack").onclick = () => {
+        state.cat = "Все";
+        state.search = "";
+        $("#searchInput").value = "";
+        renderCatalog();
+      };
+      $("#sortSel").addEventListener("change", (e) => {
+        state.sort = e.target.value;
+        renderCatalog();
+      });
+      /* ---------- КАРТОЧКИ ---------- */
+      const heartSvg =
+        '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21s-7.5-4.7-9.4-9.3C1.2 8 3.2 4.5 6.6 4.5c2 0 3.8 1.2 5.4 3 1.6-1.8 3.4-3 5.4-3 3.4 0 5.4 3.5 4 7.2C19.5 16.3 12 21 12 21z"/></svg>';
+      function cardHTML(p) {
+        const fav = state.favs.includes(p.id),
+          d = discOf(p);
+        return `<article class="pcard" data-open="${p.id}">
+<div class="pcard-img">
+<img src="https://picsum.photos/seed/${p.seed}/500/500" alt="${p.name}" loading="lazy">
+${d ? `<span class="p-disc">−${d}%</span>` : ""}
+${p.isNew ? '<span class="p-new">НОВОЕ</span>' : ""}
+<button class="heart ${fav ? "on" : ""}" data-fav="${p.id}" aria-label="В избранное">${heartSvg}</button>
+</div>
+<div class="pcard-body">
+<div class="p-prices"><span class="p-price">${fmt(p.price)}</span>${p.old ? `<span class="p-old">${fmt(p.old)}</span>` : ""}</div>
+<h3 class="p-name">${p.name}</h3>
+<div class="p-rate"><span class="star">${STAR}</span><b>${p.rating.toFixed(1)}</b> · ${p.rv} оценок</div>
+<button class="btn btn--sm btn--w p-add" data-add="${p.id}">В корзину</button>
+</div>
+</article>`;
+      }
+      function bindCards(root) {
+        root.querySelectorAll("[data-open]").forEach((c) =>
+          c.addEventListener("click", (e) => {
+            if (e.target.closest("[data-fav],[data-add]")) return;
+            openProduct(+c.dataset.open);
+          }),
+        );
+        root.querySelectorAll("[data-fav]").forEach(
+          (b) =>
+            (b.onclick = () => {
+              const id = +b.dataset.fav,
+                i = state.favs.indexOf(id);
+              if (i > -1) {
+                state.favs.splice(i, 1);
+                showToast("Убрано из избранного");
+              } else {
+                state.favs.push(id);
+                showToast("Добавлено в избранное");
+              }
+              save();
+              updateBadges();
+              if (state.tab === "favs") renderFavs();
+              else b.classList.toggle("on", state.favs.includes(id));
+            }),
+        );
+        root
+          .querySelectorAll("[data-add]")
+          .forEach((b) => (b.onclick = () => addToCart(+b.dataset.add, b)));
+      }
+      function addToCart(id, btn, qty = 1) {
+        state.cart[id] = (state.cart[id] || 0) + qty;
+        save();
+        updateBadges();
+        if (state.tab === "cart") renderCart();
+        if (btn) {
+          const t = btn.textContent;
+          btn.classList.add("added");
+          btn.textContent = "✓ Добавлено";
+          setTimeout(() => {
+            btn.classList.remove("added");
+            btn.textContent = t;
+          }, 900);
+        }
+        showToast("✓ Товар в корзине");
+      }
+      function updateBadges() {
+        const n = cartList().reduce((s, i) => s + i.q, 0),
+          f = state.favs.length;
+        [
+          ["#badgeCart", n],
+          ["#badgeFav", f],
+          ["#mBadgeCart", n],
+          ["#mBadgeFav", f],
+        ].forEach(([sel, v]) => {
+          const el = $(sel);
+          if (!el) return;
+          el.textContent = v;
+          el.classList.toggle("zero", !v);
+        });
+      }
+      function openProduct(id) {
+        if (!PRODUCTS.find((x) => x.id === id)) {
+          showToast("Товар не найден");
+          return;
+        }
+        state.backTo = state.tab === "product" ? "catalog" : state.tab;
+        state.scrollRestore = window.scrollY;
+        state.currentProduct = id;
+        state.prodQty = 1;
+        switchTab("product");
+      }
+      /* ---------- ИЗБРАННОЕ ---------- */
+      function renderFavs() {
+        const items = PRODUCTS.filter((p) => state.favs.includes(p.id));
+        $("#favAddAll").style.display = items.length ? "inline-flex" : "none";
+        if (!items.length) {
+          $("#favsBox").innerHTML =
+            '<div class="empty"><span class="stamp stamp--red">Пусто</span><p>Нажмите на сердечко у товара, он появится здесь.</p><button class="btn" id="goCat">В каталог</button></div>';
+          $("#goCat").onclick = () => switchTab("catalog");
+          return;
+        }
+        $("#favsBox").innerHTML =
+          '<div class="pgrid">' + items.map(cardHTML).join("") + "</div>";
+        bindCards($("#favsBox"));
+      }
+      $("#favAddAll").onclick = () => {
+        state.favs.forEach(
+          (id) => (state.cart[id] = (state.cart[id] || 0) + 1),
+        );
+        save();
+        updateBadges();
+        showToast("Всё избранное, в корзине");
+      };
+      /* ---------- СТРАНИЦА ТОВАРА ---------- */
+      function setFavUI(on) {
+        document
+          .querySelectorAll(".favbtn")
+          .forEach((b) => b.classList.toggle("on", on));
+      }
+      function renderProduct() {
+        const p = PRODUCTS.find((x) => x.id === state.currentProduct);
+        if (!p) {
+          showToast("Товар не найден");
+          switchTab("home");
+          return;
+        }
+        const fav = state.favs.includes(p.id),
+          d = discOf(p);
+        const imgs = [p.seed, p.seed + "-b", p.seed + "-c"];
+        let similar = PRODUCTS.filter(
+          (x) => x.cat === p.cat && x.id !== p.id,
+        ).slice(0, 4);
+        if (!similar.length)
+          similar = PRODUCTS.filter((x) => x.id !== p.id).slice(0, 4);
+        $("#productBox").innerHTML = `
+<div class="crumbs">
+<button data-crumb="home">Главная</button><span class="sep">/</span>
+<button data-crumb="catalog">Каталог</button><span class="sep">/</span>
+<button data-crumb-cat>${p.cat}</button><span class="sep">/</span>
+<span class="cur">${p.name}</span>
+</div>
+<div class="prod-grid">
+<div>
+<div class="gallery-main">
+<img id="pdMain" src="https://picsum.photos/seed/${imgs[0]}/900/900" alt="${p.name}">
+${d ? `<span class="p-disc">−${d}%</span>` : ""}
+<button class="pg-back" id="pgBack" aria-label="Назад">${icon("left", 22)}</button>
+<div class="pg-actions">
+<button class="pg-btn favbtn ${fav ? "on" : ""}" id="pdFavM" aria-label="В избранное">${heartSvg.replace('width="16" height="16"', 'width="22" height="22"')}</button>
+<button class="pg-btn" id="pgShare" aria-label="Поделиться">${icon("share", 20)}</button>
+</div>
+</div>
+<div class="thumbs">${imgs.map((s, i) => `<button class="thumb ${i === 0 ? "active" : ""}" data-thumb="https://picsum.photos/seed/${s}/900/900"><img src="https://picsum.photos/seed/${s}/200/150" alt=""></button>`).join("")}</div>
+</div>
+<div class="prod-info">
+<div class="prod-cards">
+<div class="p-card">
+<div class="prod-price-row"><span class="prod-price">${fmt(p.price)}</span>${d ? `<span class="prod-disc">↓${d}%</span>` : ""}</div>
+${p.old ? `<div class="prod-old" style="margin-top:4px">${fmt(p.old)}</div>` : ""}
+</div>
+<div class="p-card">
+<div class="warr">${icon("shield", 18)} Гарантия 30 дней <span class="arr">›</span></div>
+<h1>${p.name}</h1>
+<div class="p-rate" style="margin:10px 0 0"><span class="star">${STAR}</span><b>${p.rating.toFixed(1)}</b> · ${p.rv} оценок</div>
+<p class="prod-desc">${p.desc} Прошёл двойную юридическую проверку и допущен к продаже во всех 63 странах доставки.</p>
+</div>
+<div class="p-card">
+<label class="sum-label" for="pdCountry">Рассчитать доставку</label>
+<select class="select" id="pdCountry" style="width:100%"></select>
+<p class="ship-result" id="pdShipInfo"></p>
+</div>
+<div class="buy-row">
+<div class="qty"><button id="pdDec" aria-label="Меньше">−</button><span id="pdQty">1</span><button id="pdInc" aria-label="Больше">+</button></div>
+<button class="btn" id="pdAdd" style="flex:1;min-width:150px">В корзину</button>
+<button class="heart-lg favbtn ${fav ? "on" : ""}" id="pdFav" aria-label="В избранное">${heartSvg}</button>
+</div>
+</div>
+<div class="legal-box" style="margin-top:16px">
+<span class="stamp stamp--green" style="flex:0 0 auto">Легально</span>
+<p>Товар соответствует законодательству страны отправления и всех стран доставки.<span class="mono">ПРОТОКОЛ ПРОВЕРКИ № ${p.sku}-П • ЗАВЕРЕН ДВАЖДЫ</span></p>
+</div>
+</div>
+</div>
+<div class="sec-head"><h2 class="sec-title">Характеристики</h2></div>
+<table class="spec-table">
+<tr><td>Артикул</td><td>${p.sku}</td></tr>
+<tr><td>Категория</td><td>${p.cat}</td></tr>
+<tr><td>Происхождение</td><td>${p.origin}</td></tr>
+<tr><td>Наличие</td><td>${p.stock > 999 ? "В наличии (много)" : "В наличии: " + p.stock + " шт."}</td></tr>
+<tr><td>Юридическая проверка</td><td>Пройдена, 2 раза</td></tr>
+<tr><td>Возврат</td><td>30 дней, товар при возврате остаётся легальным</td></tr>
+</table>
+<div class="sec-head"><h2 class="sec-title">Отзывы</h2><span class="sec-note">заверено нотариусом</span></div>
+<div class="review"><q>Заказ пришёл быстро, с двумя печатями и открыткой. ${p.name}, полностью легальный, проверял лично.</q><div class="review-foot"><div><b>Марина К.</b><span class="mono">ПОРТУГАЛИЯ • ЗАКАЗ № 8841</span></div><span class="stamp stamp--green" style="font-size:10px">Одобрено</span></div></div>
+<div class="review"><q>Упаковано лучше, чем моя прошлая техника. Буду брать ещё, закон разрешает.</q><div class="review-foot"><div><b>Алексей В.</b><span class="mono">КАЗАНЬ • ЗАКАЗ № 7102</span></div><span class="stamp stamp--green" style="font-size:10px">Одобрено</span></div></div>
+<div class="sec-head"><h2 class="sec-title">Похожие <em>товары</em></h2></div>
+<div class="pgrid" id="pdSimilar"></div>
+<div class="buy-bar"><button class="btn" id="barAdd">В корзину<small>Доставка ${COUNTRIES[state.profile.country || "RU"].days} дн.</small></button></div>`;
+        $("#productBox").querySelector('[data-crumb="home"]').onclick = () =>
+          switchTab("home");
+        $("#productBox").querySelector('[data-crumb="catalog"]').onclick = () =>
+          switchTab("catalog");
+        $("#productBox").querySelector("[data-crumb-cat]").onclick = () => {
+          state.cat = p.cat;
+          switchTab("catalog");
+        };
+        $("#pgBack").onclick = () => switchTab(state.backTo || "home", true);
+        $("#pgShare").onclick = () => {
+          try {
+            navigator.clipboard.writeText(location.href);
+          } catch (e) {}
+          showToast("Ссылка на товар скопирована");
+        };
+        document.querySelectorAll(".thumb").forEach(
+          (t) =>
+            (t.onclick = () => {
+              document
+                .querySelectorAll(".thumb")
+                .forEach((x) => x.classList.remove("active"));
+              t.classList.add("active");
+              $("#pdMain").src = t.dataset.thumb;
+            }),
+        );
+        $("#pdDec").onclick = () => {
+          state.prodQty = Math.max(1, state.prodQty - 1);
+          $("#pdQty").textContent = state.prodQty;
+        };
+        $("#pdInc").onclick = () => {
+          state.prodQty = Math.min(
+            p.stock > 999 ? 99 : p.stock,
+            state.prodQty + 1,
+          );
+          $("#pdQty").textContent = state.prodQty;
+        };
+        $("#pdAdd").onclick = () => addToCart(p.id, $("#pdAdd"), state.prodQty);
+        $("#barAdd").onclick = () => addToCart(p.id, null, state.prodQty);
+        const toggleFav = () => {
+          const i = state.favs.indexOf(p.id);
+          if (i > -1) {
+            state.favs.splice(i, 1);
+            showToast("Убрано из избранного");
+          } else {
+            state.favs.push(p.id);
+            showToast("Добавлено в избранное");
+          }
+          save();
+          updateBadges();
+          setFavUI(state.favs.includes(p.id));
+        };
+        $("#pdFav").onclick = toggleFav;
+        $("#pdFavM").onclick = toggleFav;
+        $("#pdCountry").innerHTML = countryOpts;
+        $("#pdCountry").value = state.profile.country || "RU";
+        const updShip = () => {
+          const c = COUNTRIES[$("#pdCountry").value];
+          let cost = c.ship,
+            free = false;
+          if (
+            $("#pdCountry").value === "RU" &&
+            p.price * state.prodQty >= 5000
+          ) {
+            cost = 0;
+            free = true;
+          }
+          $("#pdShipInfo").innerHTML = free
+            ? `В ${c.name}: <b>${c.days} дн.</b> • <b style="color:var(--green)">бесплатно</b> (заказ от 5 000 ₽)`
+            : `В ${c.name}: <b>${c.days} дн.</b> • <b>${fmt(cost)}</b>`;
+        };
+        $("#pdCountry").onchange = updShip;
+        updShip();
+        $("#pdSimilar").innerHTML = similar.map(cardHTML).join("");
+        bindCards($("#pdSimilar"));
+      }
+      /* ---------- КОРЗИНА / ОФОРМЛЕНИЕ ---------- */
+      const countryOpts = Object.entries(COUNTRIES)
+        .map(
+          ([k, c]) =>
+            `<option value="${k}">${c.code} • ${c.name} • ${c.days} дн.</option>`,
+        )
+        .join("");
+      $("#shipCountry").innerHTML = countryOpts;
+      $("#fCountry").innerHTML = countryOpts;
+      function shipInfo(sel) {
+        const c = COUNTRIES[sel.value],
+          exp =
+            document.querySelector("input[name=dm]:checked").value === "exp";
+        let cost = Math.round(c.ship * (exp ? 1.9 : 1));
+        if (sel.value === "RU" && subtotal() >= 5000) cost = 0;
+        return { cost, days: c.days, name: c.name };
+      }
+      function renderCart() {
+        $("#cartView").hidden = false;
+        $("#checkoutView").hidden = true;
+        $("#doneView").hidden = true;
+        const items = cartList();
+        $("#cartNote").textContent = `ПОЗИЦИЙ: ${items.length}`;
+        if (!items.length) {
+          $("#cartLines").innerHTML =
+            '<div class="empty"><span class="stamp stamp--green">Пусто</span><p>Корзина легальна, но пуста. Исправим?</p><button class="btn" id="goCat2">В каталог</button></div>';
+          $("#goCat2").onclick = () => switchTab("catalog");
+        } else {
+          $("#cartLines").innerHTML = items
+            .map(
+              ({ p, q }) => `
+<div class="cline">
+<img src="https://picsum.photos/seed/${p.seed}/180/180" alt="${p.name}">
+<div><h5>${p.name}</h5><span class="mono">${p.sku} • ${p.cat.toUpperCase()}</span>
+<div class="qty"><button data-dec="${p.id}" aria-label="Меньше">−</button><span>${q}</span><button data-inc="${p.id}" aria-label="Больше">+</button></div>
+</div>
+<div class="cline-right"><span class="cline-price">${fmt(p.price * q)}</span><button class="cline-del" data-del="${p.id}">✕ УДАЛИТЬ</button></div>
+</div>`,
+            )
+            .join("");
+          document.querySelectorAll("[data-inc]").forEach(
+            (b) =>
+              (b.onclick = () => {
+                state.cart[b.dataset.inc]++;
+                save();
+                updateBadges();
+                renderCart();
+              }),
+          );
+          document.querySelectorAll("[data-dec]").forEach(
+            (b) =>
+              (b.onclick = () => {
+                const id = b.dataset.dec;
+                if (--state.cart[id] <= 0) delete state.cart[id];
+                save();
+                updateBadges();
+                renderCart();
+              }),
+          );
+          document.querySelectorAll("[data-del]").forEach(
+            (b) =>
+              (b.onclick = () => {
+                delete state.cart[b.dataset.del];
+                save();
+                updateBadges();
+                renderCart();
+              }),
+          );
+        }
+        updateTotals();
+      }
+      function updateTotals() {
+        const s = shipInfo($("#shipCountry"));
+        $("#sumSub").textContent = fmt(subtotal());
+        $("#sumShip").innerHTML =
+          s.cost === 0 ? '<span class="free">Бесплатно ✓</span>' : fmt(s.cost);
+        $("#sumTotal").textContent = fmt(subtotal() + s.cost);
+      }
+      $("#shipCountry").onchange = updateTotals;
+      document
+        .querySelectorAll("input[name=dm]")
+        .forEach((r) => (r.onchange = updateTotals));
+      function startCheckout() {
+        $("#cartView").hidden = true;
+        $("#checkoutView").hidden = false;
+        $("#fName").value = state.profile.name;
+        $("#fEmail").value = state.profile.email;
+        $("#fCountry").value = $("#shipCountry").value;
+        updateCkSummary();
+        window.scrollTo(0, 0);
+      }
+      $("#toCheckout").onclick = () => {
+        if (!cartList().length) {
+          showToast("Корзина пуста, добавьте товары");
+          return;
+        }
+        if (!state.user) {
+          pendingCheckout = true;
+          openAuth(
+            "login",
+            "Войдите или создайте аккаунт, чтобы оформить заказ",
+          );
+          return;
+        }
+        startCheckout();
+      };
+      $("#backToCart").onclick = renderCart;
+      function updateCkSummary() {
+        $("#ckLines").innerHTML = cartList()
+          .map(
+            ({ p, q }) =>
+              `<div class="sum-row"><span>${p.name} × ${q}</span><span>${fmt(p.price * q)}</span></div>`,
+          )
+          .join("");
+        const s = shipInfo($("#fCountry"));
+        $("#ckShip").innerHTML =
+          s.cost === 0 ? '<span class="free">Бесплатно ✓</span>' : fmt(s.cost);
+        $("#ckTotal").textContent = fmt(subtotal() + s.cost);
+      }
+      $("#fCountry").onchange = updateCkSummary;
+      $("#ckForm").addEventListener("submit", (e) => {
+        e.preventDefault();
+        let ok = true;
+        [
+          ["#fName", (v) => v.trim().length > 1],
+          ["#fEmail", (v) => /.+@.+\..+/.test(v)],
+          ["#fCity", (v) => v.trim().length > 1],
+          ["#fAddr", (v) => v.trim().length > 3],
+        ].forEach(([sel, test]) => {
+          const el = $(sel),
+            bad = !test(el.value);
+          el.classList.toggle("err", bad);
+          if (bad) ok = false;
+        });
+        if (!ok) {
+          showToast("Заполните обязательные поля *");
+          return;
+        }
+        const s = shipInfo($("#fCountry"));
+        const total = subtotal() + s.cost,
+          pts = Math.round(total / 10);
+        const order = {
+          num:
+            "LM-" +
+            Math.floor(1000 + Math.random() * 9000) +
+            "-" +
+            "АБВГД"[Math.floor(Math.random() * 5)],
+          date: new Date().toLocaleDateString("ru-RU"),
+          items: cartList().reduce((a, i) => a + i.q, 0),
+          lines: cartList().map((i) => ({ id: i.p.id, name: i.p.name })),
+          total,
+          pts,
+          country: COUNTRIES[$("#fCountry").value].code + " • " + s.name,
+          days: s.days,
+          pay: document.querySelector("input[name=pay]:checked").value,
+        };
+        state.orders.unshift(order);
+        state.notifs.unshift({
+          id: Date.now(),
+          text: `Заказ ${order.num} оформлен и передан юристам на проверку.`,
+          date: order.date,
+          read: false,
+        });
+        state.profile.pts += pts;
+        state.profile.name = $("#fName").value.trim();
+        state.profile.email = $("#fEmail").value.trim();
+        state.profile.country = $("#fCountry").value;
+        state.cart = {};
+        save();
+        updateBadges();
+        $("#certNum").textContent = "№ " + order.num;
+        $("#certLines").innerHTML = `
+<div><span>Получатель</span><b>${$("#fName").value}</b></div>
+<div><span>Страна</span><b>${order.country}</b></div>
+<div><span>Товаров</span><b>${order.items} шт.</b></div>
+<div><span>Доставка</span><b>${order.days} дн.</b></div>
+<div><span>Оплата</span><b>${order.pay}</b></div>
+<div><span>Итог</span><b>${fmt(order.total)}</b></div>
+<div><span>Претензий</span><b style="color:var(--green)">0 ✓</b></div>`;
+        $("#certPts").textContent = "+" + pts + " очков легальности на карту";
+        $("#cartView").hidden = true;
+        $("#checkoutView").hidden = true;
+        $("#doneView").hidden = false;
+        applyAuthUI();
+        window.scrollTo(0, 0);
+      });
+      /* ---------- ПРОФИЛЬ ---------- */
+      function orderRow(o) {
+        return `<div class="order"><span class="stamp stamp--green" style="font-size:10px">Выполнен</span>
+<div><div class="order-num">${o.num}</div><div class="order-meta">${o.date} • ${o.items} шт. • ${o.country} • ${o.days} дн.</div></div>
+<span class="order-total">${fmt(o.total)}</span></div>`;
+      }
+      function renderPmMenu() {
+        const unread = state.notifs.filter((n) => !n.read).length;
+        $("#pmMenu").innerHTML =
+          PM_ITEMS.map(
+            (it) =>
+              `<button class="pm-item ${state.pmKey === it.key ? "active" : ""}" data-pm="${it.key}">${icon(it.icon, 19)}<span>${it.label}</span>${it.key === "notif" && unread ? `<span class="pm-badge">${unread}</span>` : ""}</button>`,
+          ).join("") +
+          `<button class="pm-item pm-item--red" data-pm="logout">${icon("exit", 19)}<span>Выйти из аккаунта</span></button>`;
+        $("#pmMenu")
+          .querySelectorAll("[data-pm]")
+          .forEach(
+            (b) =>
+              (b.onclick = () => {
+                const k = b.dataset.pm;
+                if (k === "logout") {
+                  state.user = null;
+                  store.set("lm5_user", null);
+                  applyAuthUI();
+                  renderProfile();
+                  renderGeo();
+                  showToast("Вы вышли из аккаунта");
+                  return;
+                }
+                state.pmKey = k;
+                renderPmMenu();
+                renderPmContent(k);
+              }),
+          );
+      }
+      function renderPmContent(k) {
+        const el = $("#pmContent");
+        if (k === "orders") {
+          el.innerHTML =
+            `<h3 class="pm-h">Мои заказы</h3>` +
+            (state.orders.length
+              ? state.orders.map(orderRow).join("")
+              : '<div class="empty"><span class="stamp stamp--red">Нет заказов</span><p>История появится после первой покупки.</p><button class="btn" data-go-tab="catalog">В каталог</button></div>');
+        }
+        if (k === "reviews") {
+          const reviewed = new Set(state.reviews.map((r) => r.id));
+          const purchased = [];
+          state.orders.forEach((o) =>
+            (o.lines || []).forEach((l) => {
+              if (!purchased.find((x) => x.id === l.id)) purchased.push(l);
+            }),
+          );
+          const canReview = purchased.filter((l) => !reviewed.has(l.id));
+          let html = `<h3 class="pm-h">Мои отзывы</h3>`;
+          html += state.reviews.length
+            ? state.reviews
+                .map(
+                  (r) =>
+                    `<div class="review"><q>${r.text}</q><div class="review-foot"><div><b>${r.name}</b><span class="mono">${r.date}</span></div><span class="p-rate"><span class="star">${STAR}</span><b>${r.rating}.0</b></span></div></div>`,
+                )
+                .join("")
+            : `<p class="pm-p">Вы ещё не оставляли отзывов. Купите что-нибудь легальное и поделитесь мнением.</p>`;
+          if (canReview.length) {
+            html +=
+              `<h3 class="pm-h" style="margin-top:18px">Оцените купленное</h3>` +
+              canReview
+                .map(
+                  (l) =>
+                    `<div class="pm-row"><div style="flex:1"><b>${l.name}</b></div><button class="btn btn--sm" data-rev="${l.id}">Оставить отзыв</button></div>`,
+                )
+                .join("");
+          }
+          el.innerHTML = html;
+          el.querySelectorAll("[data-rev]").forEach(
+            (b) =>
+              (b.onclick = () => {
+                const id = +b.dataset.rev;
+                const l = purchased.find((x) => x.id === id);
+                state.reviews.unshift({
+                  id,
+                  name: l.name,
+                  text: "Отличный товар! Всё легально и быстро.",
+                  rating: 5,
+                  date: new Date().toLocaleDateString("ru-RU"),
+                });
+                state.profile.pts += 5;
+                save();
+                showToast("Спасибо за отзыв! +5 очков");
+                renderProfile();
+              }),
+          );
+        }
+        if (k === "seller") {
+          el.innerHTML = `<h3 class="pm-h">Стать продавцом</h3>
+<p class="pm-p">Хотите продавать на ЛЕГАЛЬНО.МАРКЕТ? Мы проверим каждый ваш товар на легальность — дважды. Комиссия платформы — 5%.</p>
+<label class="sum-label" for="sellerName">Название магазина</label>
+<input class="select" style="width:100%" id="sellerName" placeholder="ИП Печаткин «Всё легально»">
+<button class="btn" id="sellerBtn" style="margin-top:14px">Отправить заявку</button>`;
+          $("#sellerBtn").onclick = () => {
+            const v = $("#sellerName").value.trim();
+            if (v.length < 2) {
+              showToast("Укажите название магазина");
+              return;
+            }
+            state.notifs.unshift({
+              id: Date.now(),
+              text: `Заявка продавца «${v}» отправлена на юридическую проверку.`,
+              date: new Date().toLocaleDateString("ru-RU"),
+              read: false,
+            });
+            save();
+            renderPmMenu();
+            showToast("✓ Заявка отправлена! Юристы свяжутся с вами.");
+          };
+        }
+        if (k === "chats") {
+          if (!state.chats.length)
+            state.chats = [
+              {
+                name: "Поддержка ЛЕГАЛЬНО.МАРКЕТ",
+                last: "Здравствуйте! Чем можем помочь?",
+                online: true,
+              },
+            ];
+          el.innerHTML =
+            `<h3 class="pm-h">Мои чаты</h3>` +
+            state.chats
+              .map(
+                (c) =>
+                  `<div class="pm-row">${icon("chat", 20)}<div style="flex:1"><b>${c.name}</b><span class="sub">${c.last}</span></div><button class="btn btn--sm btn--dim" data-chat>Открыть</button></div>`,
+              )
+              .join("");
+          el.querySelectorAll("[data-chat]").forEach(
+            (b) =>
+              (b.onclick = () =>
+                showToast("Демо: переписка появится в продакшене")),
+          );
+        }
+        if (k === "notif") {
+          el.innerHTML =
+            `<h3 class="pm-h">Уведомления</h3>` +
+            (state.notifs.length
+              ? state.notifs
+                  .map(
+                    (n) =>
+                      `<button class="pm-row" data-notif="${n.id}" style="width:100%;text-align:left">${n.read ? "" : `<span class="dot-unread"></span>`}<div style="flex:1"><b>${n.text}</b><span class="sub">${n.date}</span></div></button>`,
+                  )
+                  .join("")
+              : `<p class="pm-p">Пока тихо. Как у юристов.</p>`) +
+            (state.notifs.length
+              ? `<button class="btn btn--dim btn--sm" id="notifClear" style="margin-top:6px">Очистить всё</button>`
+              : "");
+          el.querySelectorAll("[data-notif]").forEach(
+            (b) =>
+              (b.onclick = () => {
+                const n = state.notifs.find((x) => x.id == b.dataset.notif);
+                if (n) {
+                  n.read = true;
+                  save();
+                  renderPmMenu();
+                  renderPmContent("notif");
+                }
+              }),
+          );
+          const cl = $("#notifClear");
+          if (cl)
+            cl.onclick = () => {
+              state.notifs = [];
+              save();
+              renderPmMenu();
+              renderPmContent("notif");
+            };
+        }
+        if (k === "settings") {
+          const p = state.profile;
+          el.innerHTML = `<h3 class="pm-h">Настройки</h3>
+<form class="ck-form" novalidate>
+<label for="pfName">Имя</label><input id="pfName" placeholder="Как к вам обращаться" value="${p.name || ""}">
+<label for="pfEmail">Email</label><input id="pfEmail" type="email" placeholder="you@example.com" value="${p.email || ""}">
+<label for="pfCountry">Страна по умолчанию</label><select id="pfCountry" class="select" style="width:100%"></select>
+<label for="pfCurrency">Валюта</label>
+<select id="pfCurrency" class="select" style="width:100%">
+<option value="RUB">₽ Рубль</option><option value="USD">$ Доллар</option><option value="EUR">€ Евро</option>
+</select>
+<button class="btn btn--w" id="pfSaveBtn" type="button" style="margin-top:18px">Сохранить</button>
+</form>`;
+          $("#pfCountry").innerHTML = countryOpts;
+          $("#pfCountry").value = p.country || "RU";
+          $("#pfCurrency").value = state.currency;
+          $("#pfSaveBtn").onclick = () => {
+            state.profile.name = $("#pfName").value.trim();
+            state.profile.email = $("#pfEmail").value.trim();
+            state.profile.country = $("#pfCountry").value;
+            setCurrency($("#pfCurrency").value);
+            save();
+            applyAuthUI();
+            renderProfile();
+            renderGeo();
+            showToast("✓ Профиль сохранён");
+          };
+        }
+        if (k === "lang") {
+          el.innerHTML = `<h3 class="pm-h">Язык приложения</h3>
+<p class="pm-p">Выберите язык интерфейса. Полный перевод каталога появится в продакшене.</p>
+<div class="lang-btns">
+<button class="lang-btn ${state.lang === "ru" ? "active" : ""}" data-lang="ru">Русский</button>
+<button class="lang-btn ${state.lang === "en" ? "active" : ""}" data-lang="en">English</button>
+</div>`;
+          el.querySelectorAll("[data-lang]").forEach(
+            (b) =>
+              (b.onclick = () => {
+                state.lang = b.dataset.lang;
+                save();
+                showToast(
+                  state.lang === "ru"
+                    ? "Язык: русский"
+                    : "Language: English (demo)",
+                );
+                renderPmContent("lang");
+              }),
+          );
+        }
+        if (k === "help") {
+          el.innerHTML = `<h3 class="pm-h">Справка</h3>
+<p class="pm-p">На телефоне разделы открываются отдельной страницей — кнопка «назад» вернёт вас в профиль.</p>
+<div style="display:flex;gap:10px;flex-wrap:wrap">
+<button class="btn" id="helpFaq">Вопросы и ответы</button>
+<button class="btn btn--dim" id="helpDel">Доставка и таможня</button>
+</div>`;
+          $("#helpFaq").onclick = () => goInfo("faq");
+          $("#helpDel").onclick = () => goInfo("delivery");
+        }
+        if (k === "social") {
+          el.innerHTML = `<h3 class="pm-h">Наша платформа в соцсетях</h3>
+<p class="pm-p">Новости склада, скидки и юридические лайфхаки — подписывайтесь.</p>
+<div class="social-grid">
+${["Telegram", "VK", "YouTube", "X"].map((s) => `<button class="social-btn" data-soc="${s}">${icon("share", 18)}${s}</button>`).join("")}
+</div>`;
+          el.querySelectorAll("[data-soc]").forEach(
+            (b) =>
+              (b.onclick = () =>
+                showToast(`Мы в ${b.dataset.soc}: @legalno_market (демо)`)),
+          );
+        }
+        if (k === "contact") {
+          el.innerHTML = `<h3 class="pm-h">Связаться с нами</h3>
+<div class="pm-row">${icon("mail", 20)}<div style="flex:1"><b>help@legalno.market</b><span class="sub">Ответим в течение дня</span></div><a class="btn btn--sm btn--dim" href="mailto:help@legalno.market">Написать</a></div>
+<div class="pm-row">${icon("phone", 20)}<div style="flex:1"><b>8 800 555-ЛЕГАЛЬНО</b><span class="sub">Круглосуточно и бесплатно</span></div><a class="btn btn--sm btn--dim" href="tel:+78005553535">Позвонить</a></div>
+<div class="pm-row">${icon("home", 20)}<div style="flex:1"><b>Москва • Белград • Алматы</b><span class="sub">Юристы на месте</span></div></div>`;
+        }
+        el.querySelectorAll("[data-go-tab]").forEach(
+          (b) => (b.onclick = () => switchTab(b.dataset.goTab)),
+        );
+      }
+      function renderProfile() {
+        const p = state.profile;
+        $("#cardName").textContent = p.name || "Покупатель";
+        $("#cardNum").textContent = "№ " + (p.cardNo || "LM-24-000000");
+        $("#cardPts").textContent = p.pts;
+        const goods = state.orders.reduce((s, o) => s + o.items, 0);
+        $("#pstats").innerHTML = `
+<div class="pstat"><b>${state.orders.length}</b><span>Заказов</span></div>
+<div class="pstat"><b>${goods}</b><span>Товаров</span></div>
+<div class="pstat"><b>${p.pts}</b><span>Очков</span></div>
+<div class="pstat"><b>${COUNTRIES[p.country || "RU"].code}</b><span>Страна</span></div>`;
+        state.pmKey = state.pmKey || "orders";
+        renderPmMenu();
+        renderPmContent(state.pmKey);
+      }
+      /* ---------- ПРОЧЕЕ ---------- */
+      function buildDTable() {
+        $("#dTbody").innerHTML = Object.values(COUNTRIES)
+          .map(
+            (c) =>
+              `<tr><td><span class="cn-code">${c.code}</span> <b>${c.name}</b></td><td class="mono">${c.days} дн.</td><td class="mono">${fmt(c.ship)}</td><td>${c.note}</td></tr>`,
+          )
+          .join("");
+      }
+      function setCurrency(c) {
+        state.currency = c;
+        save();
+        if (state.tab === "home") renderHome();
+        if (state.tab === "catalog") renderCatalog();
+        if (state.tab === "favs") renderFavs();
+        if (state.tab === "cart") renderCart();
+        if (state.tab === "profile") renderProfile();
+        if (state.tab === "product") renderProduct();
+        if (state.tab === "delivery") buildDTable();
+      }
+      /* ---------- СТАРТ ---------- */
+      initSlider();
+      renderGeo();
+      renderCatCircles();
+      applyAuthUI();
+      renderHome();
+      renderFavs();
+      renderCart();
+      renderProfile();
+      buildDTable();
+      updateBadges();
+      updateHeaderVis();
+    </script>
+  </body>
+</html>
